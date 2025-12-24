@@ -1,0 +1,56 @@
+﻿@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.SatisHareket
+
+@{
+    ViewBag.Title = "Satış Yap";
+    Layout = "~/Views/Shared/_CariLayout.cshtml";
+}
+
+<h2>Satış Yap</h2>
+<br />
+
+<form class="form-group" method="post">
+    @Html.LabelFor(x => x.Urunid)
+    <input type="text" name="Urunid" value="@ViewBag.dgr1" class="form-control" readonly />
+    <br />
+
+    @Html.LabelFor(x => x.Personelid, "Personel")
+    @Html.DropDownListFor(x => x.Personelid, (List<SelectListItem>)ViewBag.dgr3, new { @class = "form-control" })
+    <br />
+
+    @Html.LabelFor(x => x.Cariid, "Cari")
+    @Html.TextBoxFor(x => x.Cariid, new { @class = "form-control" })
+    <br />
+
+    @Html.LabelFor(x => x.Adet, "Adet")
+    @Html.TextBoxFor(x => x.Adet, new { @class = "form-control", @id = "txt1" })
+    <br />
+
+    @Html.LabelFor(x => x.Fiyat, "Fiyat")
+    <input type="text" id="txt2" name="Fiyat" value="@ViewBag.dgr2" class="form-control" readonly />
+    <br />
+
+    @Html.LabelFor(x => x.ToplamTutar, "Toplam Tutar")
+    @Html.TextBoxFor(x => x.ToplamTutar, new { @class = "form-control", @id = "txt3", @readonly = "readonly" })
+    <br />
+
+    @Html.LabelFor(x => x.Tarih, "Tarih")
+    @Html.TextBoxFor(x => x.Tarih, new { @class = "form-control", @Value = DateTime.Now.ToString("yyyy-MM-dd"), @type = "date" })
+    <br />
+
+    <button class="btn btn-primary">Satış Yap</button>
+</form>
+
+<script>
+    function sum() {
+        var adet = parseInt(document.getElementById('txt1').value) || 0;
+        var fiyat = parseFloat(document.getElementById('txt2').value) || 0;
+        var sonuc = adet * fiyat;
+        if (!isNaN(sonuc)) {
+            document.getElementById('txt3').value = sonuc;
+        }
+    }
+
+    // her değişimde otomatik hesaplama
+    document.getElementById('txt1').addEventListener('keyup', sum);
+    document.getElementById('txt2').addEventListener('keyup', sum);
+</script>

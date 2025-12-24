@@ -1,0 +1,191 @@
+@using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
+@model List<KargoTakip>
+@{
+    ViewBag.Title = "Kargo Takip Sonucu";
+    Layout = null;
+    var kargoDetay = ViewBag.KargoDetay as KargoDetay;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .tracking-result {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .tracking-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            padding-bottom: 30px;
+        }
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 30px;
+            bottom: -10px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+        .timeline-item:last-child:before {
+            display: none;
+        }
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        .timeline-item:first-child .timeline-icon {
+            background: #28a745;
+            box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.2);
+        }
+        .info-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tracking-result">
+            <div class="tracking-header text-center">
+                <i class="fas fa-box fa-3x mb-3"></i>
+                <h2 class="fw-bold mb-3">Kargo Detayları</h2>
+                @if (kargoDetay != null)
+                {
+                    <h4 class="mb-0">
+                        <i class="fas fa-barcode"></i> @kargoDetay.TakipKodu
+                    </h4>
+                }
+            </div>
+
+            <div class="p-4">
+                @if (kargoDetay != null)
+                {
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="info-card">
+                                <h6 class="fw-bold mb-2">
+                                    <i class="fas fa-user text-primary"></i> Alıcı Bilgisi
+                                </h6>
+                                <p class="mb-0">@(kargoDetay.Alici ?? "Belirtilmemiş")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-card">
+                                <h6 class="fw-bold mb-2">
+                                    <i class="fas fa-user-tie text-primary"></i> Sorumlu Personel
+                                </h6>
+                                <p class="mb-0">@(kargoDetay.Personel ?? "Belirtilmemiş")</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="info-card">
+                                <h6 class="fw-bold mb-2">
+                                    <i class="fas fa-info-circle text-primary"></i> Açıklama
+                                </h6>
+                                <p class="mb-0">@(kargoDetay.Aciklama ?? "Açıklama bulunmuyor")</p>
+                            </div>
+                        </div>
+                        @if (kargoDetay.Tarih != null)
+                        {
+                            <div class="col-12">
+                                <div class="info-card">
+                                    <h6 class="fw-bold mb-2">
+                                        <i class="fas fa-calendar text-primary"></i> Oluşturulma Tarihi
+                                    </h6>
+                                    <p class="mb-0">@kargoDetay.Tarih.Value.ToString("dd MMMM yyyy HH:mm")</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                <hr class="my-4">
+
+                <h5 class="fw-bold mb-4">
+                    <i class="fas fa-route"></i> Kargo Hareketleri
+                </h5>
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="timeline">
+                        @foreach (var takip in Model)
+                        {
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-0 fw-bold">@takip.Aciklama</h6>
+                                        <small class="text-muted">
+                                            <i class="far fa-clock"></i> 
+                                            @takip.TarihZaman.ToString("dd/MM/yyyy HH:mm")
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Bu kargo için henüz hareket kaydı bulunmamaktadır.
+                    </div>
+                }
+
+                <div class="d-grid gap-2 mt-4">
+                    <a href="@Url.Action("KargoTakip", "Kargo")" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i> Başka Kargo Sorgula
+                    </a>
+                    <a href="@Url.Action("Index", "Login")" class="btn btn-outline-secondary">
+                        <i class="fas fa-home"></i> Ana Sayfaya Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.KargoDetay
+@{
+    ViewBag.Title = "Kargo Güncelle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit"></i> Kargo Bilgilerini Güncelle
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("KargoGuncelle", "Kargo", FormMethod.Post, new { @class = "needs-validation" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(x => x.KargoDetayid)
+                        @Html.HiddenFor(x => x.TakipKodu)
+                        @Html.HiddenFor(x => x.Tarih)
+                        
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-barcode"></i> 
+                            <strong>Takip Kodu:</strong> @Model.TakipKodu
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-user-tie"></i> @Html.DisplayNameFor(x => x.Personel)
+                                </label>
+                                @Html.TextBoxFor(x => x.Personel, new { @class = "form-control", placeholder = "Sorumlu personel adı", required = "required" })
+                                @Html.ValidationMessageFor(x => x.Personel, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-user"></i> @Html.DisplayNameFor(x => x.Alici)
+                                </label>
+                                @Html.TextBoxFor(x => x.Alici, new { @class = "form-control", placeholder = "Alıcı adı", required = "required" })
+                                @Html.ValidationMessageFor(x => x.Alici, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-comment-alt"></i> @Html.DisplayNameFor(x => x.Aciklama)
+                            </label>
+                            @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control", rows = "4", placeholder = "Kargo hakkında detaylı açıklama giriniz...", required = "required" })
+                            @Html.ValidationMessageFor(x => x.Aciklama, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg text-dark">
+                                <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                            </button>
+                            <a href="@Url.Action("Index", "Kargo")" class="btn btn-outline-secondary">
+                                <i class="fas fa-times"></i> İptal
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

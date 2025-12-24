@@ -1,0 +1,263 @@
+﻿@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.Class4
+
+@{
+    ViewBag.Title = "Dinamik";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<br />
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><strong>Fatura & Kalem İşlemleri</strong></h5>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newOrderModal" onclick="addNewOrder()">Fatura Girişi</button>
+    </div>
+
+    @* Fatura Listesi *@
+    @if (Model?.deger1 != null && Model.deger1.Any())
+    {
+        foreach (var item in Model.deger1)
+        {
+            <div class="card-body border-bottom">
+                <table class="table table-sm table-striped">
+                    <tbody>
+                        <tr class="py-4">
+                            <td class="py-2 px-2"><strong>Seri-SıraNo:</strong> @($"{item.FaturaSeriNo}-{item.FaturaSiraNo}")</td>
+                            <td class="py-2 px-2"><strong>Cari:</strong> @item.TeslimEden</td>
+                            <td class="py-2 px-2"><strong>Tarih:</strong> @item.Tarih.ToShortDateString()</td>
+                            <td class="py-2 px-2"><strong>Vergi Dairesi:</strong> @item.VergiDairesi</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="px-0">
+                                <table class="table table-bordered table-hover mt-2">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Açıklama</th>
+                                            <th>Miktar</th>
+                                            <th>Fiyat</th>
+                                            <th>Tutar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var totalBill = 0m;
+                                        }
+                                        @foreach (var order in item.FaturaKalems)
+                                        {
+                                            <tr>
+                                                <td>@order.Aciklama</td>
+                                                <td>@order.Miktar</td>
+                                                <td>@order.BiriFiyat</td>
+                                                <td>@order.Tutar</td>
+                                            </tr>
+                                            totalBill += order.Tutar;
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="text-end pe-3">
+                                    <strong>Fatura Toplam Tutar: </strong>@totalBill ₺
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="card-body">
+            Henüz fatura bulunmuyor.
+        </div>
+    }
+</div>
+
+@* Modal *@
+<div class="modal fade" id="newOrderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Fatura Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="NewOrderForm">
+                <div class="modal-body">
+                    <h5 class="text-danger fw-bold">📄 Fatura Detayları</h5>
+                    <div class="bg-light rounded p-3 shadow-sm mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Seri No</label>
+                                <input type="text" id="FaturaSeriNo" name="FaturaSeriNo" class="form-control" placeholder="Seri Numarası" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Sıra No</label>
+                                <input type="text" id="FaturaSiraNo" name="FaturaSiraNo" class="form-control" placeholder="Sıra Numarası" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tarih</label>
+                                <input type="date" id="Tarih" name="Tarih" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Vergi Dairesi</label>
+                                <input type="text" id="VergiDairesi" name="VergiDairesi" class="form-control" placeholder="Vergi Dairesi" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Saat</label>
+                                <input type="time" id="Saat" name="Saat" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teslim Eden</label>
+                                <input type="text" id="TeslimEden" name="TeslimEden" class="form-control" placeholder="Teslim Eden Cari/Personel" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teslim Alan</label>
+                                <input type="text" id="TeslimAlan" name="TeslimAlan" class="form-control" placeholder="Teslim Alan Cari/Personel" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Toplam Tutar</label>
+                                <input type="number" id="Toplam" name="Toplam" class="form-control" placeholder="Toplam Tutar" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="text-danger fw-bold">🧾 Fatura Kalemleri</h5>
+                    <div class="bg-light rounded p-3 shadow-sm">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-6">
+                                <label class="form-label">Açıklama</label>
+                                <input type="text" id="Aciklama" class="form-control" placeholder="Ürün / Birim Açıklaması" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Fiyat</label>
+                                <input type="number" id="BirimFiyat" class="form-control" placeholder="Birim Fiyatı" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Miktar</label>
+                                <input type="number" id="Miktar" class="form-control" placeholder="Miktar" />
+                            </div>
+                            <div class="col-12 text-end">
+                                <button id="addToList" class="btn btn-success mt-2"><i class="fa fa-plus me-1"></i> Listeye Ekle</button>
+                            </div>
+                        </div>
+
+                        <table id="detailsTable" class="table table-striped table-bordered mt-4">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Açıklama</th>
+                                    <th>Miktar</th>
+                                    <th>Fiyat</th>
+                                    <th>Tutar</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button id="saveOrder" type="submit" class="btn btn-danger">Faturayı Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 & jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@section scripts{
+    <script>
+        function addNewOrder() {
+            var myModal = new bootstrap.Modal(document.getElementById('newOrderModal'));
+            myModal.show();
+        }
+
+        function updateToplam() {
+            var toplam = 0;
+            $("#detailsTable tbody tr").each(function () {
+                toplam += parseFloat($(this).find('td:eq(3)').text());
+            });
+            $("#Toplam").val(toplam);
+        }
+
+        // Listeye ekle butonu
+        $("#addToList").click(function (e) {
+            e.preventDefault();
+            var Aciklama = $("#Aciklama").val(),
+                BiriFiyat = $("#BirimFiyat").val(),
+                Miktar = $("#Miktar").val();
+
+            if (Aciklama === "" || BiriFiyat === "" || Miktar === "") return;
+
+            var row = `<tr>
+                    <td>${Aciklama}</td>
+                    <td>${Miktar}</td>
+                    <td>${BiriFiyat}</td>
+                    <td>${parseFloat(BiriFiyat) * parseInt(Miktar)}</td>
+                    <td><a href="#" class="deleteItem" data-itemId="0">Çıkar</a></td>
+                </tr>`;
+
+            $("#detailsTable tbody").append(row);
+
+            // Toplamı güncelle
+            updateToplam();
+
+            // Formu temizle
+            $("#Aciklama,#BirimFiyat,#Miktar").val('');
+        });
+
+        // Liste elemanını sil
+        $(document).on('click', 'a.deleteItem', function (e) {
+            e.preventDefault();
+            $(this).closest('tr').fadeOut(400, function () {
+                $(this).remove();
+                updateToplam();
+            });
+        });
+
+        // SaveOrder
+        function saveOrder(data) {
+            return $.ajax({
+                type: 'POST',
+                url: '/Faturalar/FaturaKaydet',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: data,
+                success: function (result) { alert(result); location.reload(); },
+                error: function () { alert('Hata oluştu!'); }
+            });
+        }
+
+        $("#saveOrder").click(function (e) {
+            e.preventDefault();
+            var orderArr = [];
+            $("#detailsTable tbody tr").each(function () {
+                orderArr.push({
+                    Aciklama: $(this).find('td:eq(0)').text(),
+                    Miktar: $(this).find('td:eq(1)').text(),
+                    BiriFiyat: $(this).find('td:eq(2)').text(),
+                    Tutar: $(this).find('td:eq(3)').text()
+                });
+            });
+
+            var data = JSON.stringify({
+                FaturaSeriNo: $("#FaturaSeriNo").val(),
+                FaturaSiraNo: $("#FaturaSiraNo").val(),
+                Tarih: $("#Tarih").val(),
+                Saat: $("#Saat").val(),
+                VergiDairesi: $("#VergiDairesi").val(),
+                TeslimEden: $("#TeslimEden").val(),
+                TeslimAlan: $("#TeslimAlan").val(),
+                Toplam: $("#Toplam").val(),
+                kalemler: orderArr
+            });
+
+            saveOrder(data);
+        });
+    </script>
+}

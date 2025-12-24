@@ -1,0 +1,52 @@
+@{
+    ViewBag.Title = "Kargo Sorgula";
+    Layout = "~/Views/Shared/_CariLayout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-search"></i> Kargo Sorgula</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Hata != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> @ViewBag.Hata
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("KargoSorgula", "CariPanel", FormMethod.Post, new { @class = "needs-validation" }))
+                    {
+                        <div class="mb-3">
+                            <label for="takipKodu" class="form-label fw-bold">
+                                <i class="fas fa-barcode"></i> Takip Kodu
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="takipKodu" 
+                                   name="takipKodu" 
+                                   placeholder="Örn: 123ABC45XY67ZZZ" 
+                                   required 
+                                   maxlength="20">
+                            <small class="form-text text-muted">
+                                <i class="fas fa-info-circle"></i> Kargo takip kodunuzu giriniz
+                            </small>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-search"></i> Sorgula
+                            </button>
+                            <a href="@Url.Action("KargoTakibi", "CariPanel")" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Geri Dön
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

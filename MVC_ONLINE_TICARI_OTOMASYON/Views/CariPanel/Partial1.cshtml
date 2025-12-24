@@ -1,0 +1,65 @@
+﻿@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.Cariler
+
+@using (Html.BeginForm("CariBilgiGuncelle", "CariPanel", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(x => x.Cariid)
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.CariAd, "İsim:", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.CariAd, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.CariAd)
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.CariSoyad, "Soyisim:", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.CariSoyad, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.CariSoyad)
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.CariMail, "Mail Adresi:", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.CariMail, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.CariMail)
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.CariSehir, "Şehir:", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.CariSehir, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        @Html.LabelFor(x => x.CariSifre, "Şifre:", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.PasswordFor(x => x.CariSifre, new { @class = "form-control", autocomplete = "new-password" })
+            @Html.ValidationMessageFor(x => x.CariSifre)
+            <small class="form-text text-muted">Şifreyi değiştirmek istemiyorsanız boş bırakın.</small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> Bilgileri okudum.
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+            <button type="submit" class="btn btn-danger">Güncelle</button>
+        </div>
+    </div>
+}

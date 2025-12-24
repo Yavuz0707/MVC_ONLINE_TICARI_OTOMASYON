@@ -1,0 +1,41 @@
+﻿@using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
+@model List<Personel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<table class="table table-bordered " style="margin-top:20px; margin-left:20px; margin-right:20px;">
+
+    <tr>
+        <td>ID</td>
+        <th>Personel Ad</th>
+        <th>Personel Soyad</th>
+        <th>Görsel</th>
+        <th>Departman</th>
+        <th>Güncelle</th>
+        <th>Satışlar</th>
+    </tr>
+
+    @foreach (var k in Model)
+    {
+        <tr>
+            <td>@k.Personelid</td>
+            <td>@k.PersonelAd</td>
+            <td>@k.PersonelSoyad</td>
+            <td>
+                <img  src="@k.PersonelGorsel" style="width:100px;height:75px;"/>
+            </td>
+            <td>@k.Departman.DepartmanAd</td>
+
+            <td>
+                <a href="/Personsel/PersonelGetir/@k.Personelid" class="btn btn-success">Güncelle</a>
+            </td>
+            <td>
+                <a href="/Departman/DepartmanPersonelSatis/@k.Personelid" class="btn btn-success" style="background-color: darkmagenta">Detaylar</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<a href="/Personsel/PersonelEkle" class="btn btn-info">Personel Ekle</a>

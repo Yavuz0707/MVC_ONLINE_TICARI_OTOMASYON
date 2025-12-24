@@ -1,0 +1,35 @@
+﻿@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.Cariler 
+@{
+    ViewBag.Title = "CariGetir";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<!--Güncelleme işlemi için carileri ekrana getirme-->
+
+<br />
+<h2>Müşteri Güncelleme Ekranı</h2>
+<br />
+
+@using (Html.BeginForm("CariGuncelle", "Cari", FormMethod.Post))
+            {
+                       <!--Seçtiğimiz kişinin değerlerini textbox ta getirmesi için yazldı-->
+
+        
+                  <div class="form-group">
+                      @Html.HiddenFor(x => x.Cariid)
+                      @Html.LabelFor(x => x.CariAd)
+                      @Html.TextBoxFor(x => x.CariAd, new { @class = "form-control" })
+                      <br />
+                      @Html.LabelFor(x => x.CariSoyad)
+                      @Html.TextBoxFor(x => x.CariSoyad, new { @class = "form-control" })
+                      <br />
+                      @Html.LabelFor(x => x.CariSehir)
+                      @Html.TextBoxFor(x => x.CariSehir, new { @class = "form-control" })
+                      <br />
+                      @Html.LabelFor(x => x.CariMail)
+                      @Html.TextBoxFor(x => x.CariMail, new { @class = "form-control" })
+                      <br />
+                      <button class="btn btn-default" style="background-color:yellowgreen">Güncelle</button>
+                  </div>
+     
+            }

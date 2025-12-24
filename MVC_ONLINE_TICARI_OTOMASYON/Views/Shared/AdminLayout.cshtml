@@ -1,0 +1,268 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Mvc5 ile Online Ticari Otomasyon</title>
+    <link href="~/Web/dist/css/styles.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.html">Ticari Otomasyon</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button><!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" id="searchForm" style="position: relative;">
+            <div class="input-group">
+                <input class="form-control" type="text" id="menuSearch" placeholder="Arama Yap..." aria-label="Search" autocomplete="off" />
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div id="searchResults" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; max-height: 300px; overflow-y: auto; display: none; z-index: 9999; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i> 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span>@User.Identity.Name</span>
+                    }
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Ayarlar</a><a class="dropdown-item" href="#">Hesabım</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="@Url.Action("Logout", "Login")"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">İşlemler</div>
+
+                        <!--Burada Kategori-index yazarak yolu değiştirdil-->
+                        <!--Yaptığımız safayı aldığımız bootstrapda istediğimiz bölüme atamak için-->
+                        <a class="nav-link" href="/Kategori/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kategoriler
+                        </a>
+                        <a class="nav-link" href="/Urun/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
+                            Ürünler
+                        </a>
+                        <a class="nav-link" href="/Departman/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bars"></i></div>
+                            Departmanlar
+                        </a>
+                        <a class="nav-link" href="/Cari/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                            Cariler
+                        </a>
+                        <a class="nav-link" href="/Personsel/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-street-view"></i></div>
+                            Personeller
+                        </a>
+
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bar-chart"></i></div>
+                            Grafikler
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Grafik Türleri
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/Grafik/Index5/">Pie Grafik</a>
+                                        <a class="nav-link" href="/Grafik/Index6/">Line Grafik</a>
+                                        <a class="nav-link" href="/Grafik/Index7/">Column Grafik</a>
+                                    </nav>
+                                </div>
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                    Hata Sayfaları
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="401.html">401 Page</a><a class="nav-link" href="404.html">404 Page</a><a class="nav-link" href="500.html">500 Page</a></nav>
+                                </div>
+                            </nav>
+                        </div>
+
+                        <div class="sb-sidenav-menu-heading">Rapor & fatura</div>
+                        <a class="nav-link" href="/Satıs/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+                            Satışlar
+                        </a>
+                        <a class="nav-link" href="/Faturalar/Index/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+                            Faturalar
+                        </a>
+                        <a class="nav-link" href="/Faturalar/Dinamik/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-procedures"></i></div>
+                            Dinamik Faturalar
+                        </a>
+                        <a class="nav-link" href="/Personsel/PersonelListe">
+                            <div class="sb-nav-link-icon"><i class="fas fa-people-carry"></i></div>
+                            Personel Listesi
+                        </a>
+
+
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-pie"></i></div>
+                            Giderler
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Kargo")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-shipping-fast"></i></div>
+                            Kargo
+                        </a>
+
+                        <a class="nav-link" href="/Urun/UrunListesi/">
+                            <div class="sb-nav-link-icon"><i class="fas fa-print"></i></div>
+                            PDF ~ EXCEL
+                        </a>
+                        <a class="nav-link" href="/istatistik/Index">
+                            <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
+                            İstatistikler
+                        </a>
+                        <a class="nav-link" href="/Galeri/Index">
+                            <div class="sb-nav-link-icon"><i class="fas fa-camera-retro"></i></div>
+                            Galeri
+                        </a>
+                        @if (User.IsInRole("A"))
+                        {
+                            <a class="nav-link" href="/istatistik/kolaytablolar">
+                                <div class="sb-nav-link-icon"><i class="fas fa-car"></i></div>
+                                Hızlı Bakş
+                            </a>  //Sadece A yetkisi olan personeller buraya erişebilir.
+                        }
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Giriş Yapan:</div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span>@User.Identity.Name</span>
+                    }
+                    else
+                    {
+                        <span>Misafir</span>
+                    }
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2019</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~/Web/dist/js/scripts.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            var menuItems = [
+                { label: "Kategoriler", url: "/Kategori/Index" },
+                { label: "Ürünler", url: "/Urun/Index" },
+                { label: "Departmanlar", url: "/Departman/Index" },
+                { label: "Cariler", url: "/Cari/Index" },
+                { label: "Müşteriler", url: "/Cari/Index" },
+                { label: "Personeller", url: "/Personsel/Index" },
+                { label: "Grafikler", url: "/Grafik/Index" },
+                { label: "Satışlar", url: "/Satıs/Index" },
+                { label: "Faturalar", url: "/Faturalar/Index" },
+                { label: "Giderler", url: "/Gider/Index" },
+                { label: "Kargo", url: "/Kargo/Index" },
+                { label: "Mesajlar", url: "/Mesaj/Index" },
+                { label: "Yeni Kargo Ekle", url: "/Kargo/YeniKargo" },
+                { label: "Yeni Ürün Ekle", url: "/Urun/YeniUrun" },
+                { label: "Yeni Kategori Ekle", url: "/Kategori/KategoriEkle" },
+                { label: "Yapılacaklar", url: "/Yapilacak/Index" }
+            ];
+            
+            var selectedIndex = -1;
+            
+            $("#menuSearch").on("input", function() {
+                var term = $(this).val().toLowerCase();
+                var results = $("#searchResults");
+                
+                if(term.length < 1) {
+                    results.hide();
+                    return;
+                }
+                
+                var filtered = menuItems.filter(function(item) {
+                    return item.label.toLowerCase().indexOf(term) !== -1;
+                });
+                
+                if(filtered.length > 0) {
+                    var html = "";
+                    filtered.forEach(function(item, index) {
+                        html += '<div class="search-item" data-url="' + item.url + '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee;">' + 
+                                '<i class="fas fa-arrow-right" style="margin-right: 8px;"></i>' + item.label + '</div>';
+                    });
+                    results.html(html).show();
+                } else {
+                    results.html('<div style="padding: 10px; color: #999;">Sonuç bulunamadı</div>').show();
+                }
+            });
+            
+            $(document).on("click", ".search-item", function() {
+                window.location.href = $(this).data("url");
+            });
+            
+            $(document).on("mouseenter", ".search-item", function() {
+                $(this).css("background-color", "#007bff").css("color", "white");
+            }).on("mouseleave", ".search-item", function() {
+                $(this).css("background-color", "").css("color", "");
+            });
+            
+            $(document).click(function(e) {
+                if(!$(e.target).closest("#searchForm").length) {
+                    $("#searchResults").hide();
+                }
+            });
+            
+            $("#searchForm").submit(function(e) {
+                e.preventDefault();
+                var firstItem = $("#searchResults .search-item").first();
+                if(firstItem.length) {
+                    window.location.href = firstItem.data("url");
+                }
+            });
+        });
+    </script>
+</html>
+

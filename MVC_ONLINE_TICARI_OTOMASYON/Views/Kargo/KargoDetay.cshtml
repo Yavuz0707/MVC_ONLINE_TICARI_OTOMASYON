@@ -1,0 +1,118 @@
+@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.KargoDetay
+@{
+    ViewBag.Title = "Kargo Detay";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-box"></i> Kargo Detay Bilgileri
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="alert alert-info">
+                                    <h5 class="alert-heading">
+                                        <i class="fas fa-barcode"></i> Takip Kodu
+                                    </h5>
+                                    <h3 class="mb-0">@Model.TakipKodu</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <i class="fas fa-user-tie"></i> Sorumlu Personel
+                                        </h6>
+                                        <p class="card-text h5">@(Model.Personel ?? "Belirtilmemiş")</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <i class="fas fa-user"></i> Alıcı
+                                        </h6>
+                                        <p class="card-text h5">@(Model.Alici ?? "Belirtilmemiş")</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <i class="far fa-calendar"></i> Oluşturulma Tarihi
+                                        </h6>
+                                        <p class="card-text h5">
+                                            @if (Model.Tarih.HasValue)
+                                            {
+                                                @Model.Tarih.Value.ToString("dd MMMM yyyy HH:mm")
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Belirtilmemiş</span>
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <i class="fas fa-hashtag"></i> Kargo ID
+                                        </h6>
+                                        <p class="card-text h5">@Model.KargoDetayid</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <i class="fas fa-info-circle"></i> Açıklama
+                                        </h6>
+                                        <p class="card-text">@(Model.Aciklama ?? "Açıklama bulunmuyor")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="@Url.Action("KargoGuncelle", "Kargo", new { id = Model.KargoDetayid })" class="btn btn-warning btn-lg">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+                            <a href="@Url.Action("Index", "Kargo")" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Listeye Dön
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> Kargo bilgisi bulunamadı!
+                        </div>
+                        <a href="@Url.Action("Index", "Kargo")" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Listeye Dön
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

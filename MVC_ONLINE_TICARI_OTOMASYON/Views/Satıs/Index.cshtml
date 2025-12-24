@@ -1,0 +1,71 @@
+﻿@using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+@model List<SatisHareket>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2 class="mt-4">Satışlar</h2>
+
+<table  id="tbl1"  class="table table-bordered" style="margin-top:20px">
+
+    <tr>
+        <th>ID</th>
+        <th>Ürün</th>
+        <th>Cari</th>
+        <th>Personel</th>
+        <th>Adet</th>
+        <th>Fiyat</th>
+        <th>Toplam</th>
+        <th>Tarih</th>
+        <th>Güncelle</th>
+        <th>Detaylar</th>
+    </tr>
+
+
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.Satisid</td>
+            <td>@u.Urun.UrunAd</td>
+            <td>@u.Cariler.CariAd @u.Cariler.CariSoyad</td>
+            <td>@u.Personel.PersonelAd @u.Personel.PersonelSoyad</td>
+            <td>@u.Adet</td>
+            <td>@u.Fiyat.ToString("C2")</td>
+            <td>@u.ToplamTutar.ToString("C2")</td>
+            <td>@u.Tarih.ToString("dd.MM.yyyy")</td>
+            <td>
+                <a href="/Satıs/SatisGetir/@u.Satisid" class="btn btn-sm btn-outline-danger">Güncelle</a>
+            </td>
+            <td>
+                <a href="/Satıs/SatisGetir/@u.Satisid" class="btn btn-sm btn-outline-success">Detaylar</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<a href="/Satıs/YeniSatis" class="btn btn-info mt-3">Yeni Satış</a>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<link href="~/Content/bootstrap.css" rel=" stylesheet" />
+
+
+
+<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+<script>
+
+    $('#tbl1').dataTable({});
+
+</script>

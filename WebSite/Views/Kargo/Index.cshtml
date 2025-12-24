@@ -1,0 +1,48 @@
+﻿@using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+@model List<KargoDetay>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Index", "Kargo", FormMethod.Get))
+{
+    <div class="input-group mb-3" style="width:300px;">
+        @Html.TextBox("p", null, new { @class = "form-control", placeholder = "Kargo Takip No" })
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Ara</button>
+        </div>
+    </div>
+}
+<table class="table table-bordered " style="margin-top:20px; margin-left:20px; margin-right:20px;">
+
+    <tr>
+
+        <th>Personel</th>
+        <th>Alıcı</th>
+        <th>Takip Kodu</th>
+        <th>Tarih</th>
+        <th>Detaylar</th>
+    </tr>
+
+    @foreach (var k in Model)
+    {<!--Veri Listeleme İçin Kullanılr.-->
+
+        <tr>
+            <!--Verileri Getirmek için -->
+            <td>
+                @k.Personel
+            </td>
+            <td>
+                @k.Alici
+            </td>
+            <td>@k.TakipKodu</td>
+            <td>@k.Tarih</td>
+
+            <td><a href="/Kargo/KargoTakip/@k.TakipKodu" class="btn btn-success" style="background-color : darkmagenta">Detaylar</a></td>
+
+        </tr>
+    }
+</table>
+
+<a href="/Kargo/YeniKargo" class="btn btn-info">Yeni Kargo Girişi</a>
+
