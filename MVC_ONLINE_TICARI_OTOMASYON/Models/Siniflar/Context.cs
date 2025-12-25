@@ -8,6 +8,11 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
 {
     public class Context : DbContext
     {
+        public Context() : base("data source=YAVUZ\\SQLEXPRESS;initial catalog=dataproje;integrated security=True;MultipleActiveResultSets=True;App=TicariOtomasyon")
+        {
+            // Otomatik migration'ı kapat
+            Database.SetInitializer<Context>(null);
+        }
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Cariler> Carilers { get; set; }
@@ -20,7 +25,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
         public DbSet<SatisHareket> SatisHarekets { get; set; }
         public DbSet<Urun> Uruns { get; set; }
 
-        public DbSet<mesajlar> mesajlars { get; set; }
+        public DbSet<Mesajlar> mesajlars { get; set; }
 
         public DbSet<Detay> Detays { get; set; }
 

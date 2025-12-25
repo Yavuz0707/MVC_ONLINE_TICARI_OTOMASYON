@@ -1,0 +1,89 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Admin Paneli Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- İstatistik Kutuları - Custom Tag Helper Kullanımı -->
+                <div class="col-lg-3 col-6">
+                    <stat-box title="Toplam Ürün" 
+                             value="@ViewBag.ToplamUrun" 
+                             icon="fas fa-box" 
+                             color="info">
+                    </stat-box>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <stat-box title="Kategoriler" 
+                             value="@ViewBag.ToplamKategori" 
+                             icon="fas fa-tags" 
+                             color="success">
+                    </stat-box>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <stat-box title="Personel" 
+                             value="@ViewBag.ToplamPersonel" 
+                             icon="fas fa-users" 
+                             color="warning">
+                    </stat-box>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <stat-box title="Cariler" 
+                             value="@ViewBag.ToplamCari" 
+                             icon="fas fa-user-tie" 
+                             color="danger">
+                    </stat-box>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <!-- Custom Html Helper Kullanımı -->
+                    @Html.AlertBox("Admin paneline hoş geldiniz! Bu alan sadece yöneticiler için.", "success")
+                </div>
+                <div class="col-md-6">
+                    <!-- Custom Tag Helper Kullanımı -->
+                    <alert-box type="info" dismissible="true">
+                        Sistem sürümü: v1.0 - .NET 9.0
+                    </alert-box>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <card-box title="Hızlı İşlemler" color="primary" icon="fas fa-bolt">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.IconButton("Yeni Ürün", "fas fa-plus", "btn-success btn-block", "/Urun/YeniUrun")
+                            </div>
+                            <div class="col-md-3">
+                                @Html.IconButton("Satış Yap", "fas fa-shopping-cart", "btn-info btn-block", "/Satıs/YeniSatis")
+                            </div>
+                            <div class="col-md-3">
+                                @Html.IconButton("Kargo Takip", "fas fa-truck", "btn-warning btn-block", "/Kargo/Index")
+                            </div>
+                            <div class="col-md-3">
+                                @Html.IconButton("Raporlar", "fas fa-chart-bar", "btn-primary btn-block", "/Admin/Dashboard/Raporlar")
+                            </div>
+                        </div>
+                    </card-box>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,6 +28,10 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
         [Column(TypeName = "Varchar")]
         [StringLength(20)]
         public string CariSifre { get; set; }
+
+        [Column(TypeName = "Varchar")]
+        [StringLength(250)]
+        public string ProfilFoto { get; set; }
 
         public bool Durum { get; set; } //Cari aktif mi pasif mi? Bu alan silme işlemi için kullanılacak.
 

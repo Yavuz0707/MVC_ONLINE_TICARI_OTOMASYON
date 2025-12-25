@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.UI.WebControls.WebParts;
 using System.Data.Entity;
 
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
@@ -31,11 +32,11 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
 
         [HttpPost]
-        public ActionResult FaturaEkle(Faturalar f) //Burada Faturalar sınıfından gelen f parametresi kullanılıyor.
+        public ActionResult FaturaEkle(Faturalar f) //Burada Faturalar s�n�f�ndan gelen f parametresi kullan�l�yor.
         {
-            c.Faturalars.Add(f); //Faturalar sınıfından gelen f parametresini c.Faturalars'a ekliyoruz.
-                c.SaveChanges(); //Değişiklikleri kaydediyoruz.
-             return RedirectToAction("Index"); //Faturalar listesini görüntülemek için Index metoduna yönlendiriyoruz.                    
+            c.Faturalars.Add(f); //Faturalar s�n�f�ndan gelen f parametresini c.Faturalars'a ekliyoruz.
+                c.SaveChanges(); //De�i�iklikleri kaydediyoruz.
+             return RedirectToAction("Index"); //Faturalar listesini g�r�nt�lemek i�in Index metoduna y�nlendiriyoruz.                    
         }
 
         public ActionResult FaturaGetir (int id)
@@ -47,15 +48,15 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult FaturaGuncelle(Faturalar f)
         {
-            var fatura = c.Faturalars.Find(f.Faturaid); //Faturaid ile faturayı buluyoruz.
-            fatura.FaturaSeriNo = f.FaturaSeriNo; //FaturaSeriNo'yu güncelliyoruz.
-            fatura.FaturaSiraNo = f.FaturaSiraNo; //FaturaSiraNo'yu güncelliyoruz.
-            fatura.Saat = f.Saat; //Saati güncelliyoruz.
-            fatura.Tarih = f.Tarih; //Tarihi güncelliyoruz.
-            fatura.VergiDairesi = f.VergiDairesi; //VergiDairesini güncelliyoruz.
+            var fatura = c.Faturalars.Find(f.Faturaid); //Faturaid ile faturay� buluyoruz.
+            fatura.FaturaSeriNo = f.FaturaSeriNo; //FaturaSeriNo'yu g�ncelliyoruz.
+            fatura.FaturaSiraNo = f.FaturaSiraNo; //FaturaSiraNo'yu g�ncelliyoruz.
+            fatura.Saat = f.Saat; //Saati g�ncelliyoruz.
+            fatura.Tarih = f.Tarih; //Tarihi g�ncelliyoruz.
+            fatura.VergiDairesi = f.VergiDairesi; //VergiDairesini g�ncelliyoruz.
            
-            c.SaveChanges(); //Değişiklikleri kaydediyoruz.
-            return RedirectToAction("Index"); //Faturalar listesini görüntülemek için Index metoduna yönlendiriyoruz.
+            c.SaveChanges(); //De�i�iklikleri kaydediyoruz.
+            return RedirectToAction("Index"); //Faturalar listesini g�r�nt�lemek i�in Index metoduna y�nlendiriyoruz.
         }
 
         public ActionResult FaturaDetay(int id)
@@ -74,8 +75,8 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult YeniKalem(FaturaKalem p)
         {
-            c.FaturaKalems.Add(p); //FaturaKalem sınıfından gelen p parametresini c.FaturaKalems'e ekliyoruz.
-            c.SaveChanges(); //Değişiklikleri kaydediyoruz.
+            c.FaturaKalems.Add(p); //FaturaKalem s�n�f�ndan gelen p parametresini c.FaturaKalems'e ekliyoruz.
+            c.SaveChanges(); //De�i�iklikleri kaydediyoruz.
             return RedirectToAction("Index");
         }
 
@@ -83,16 +84,16 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         {
             Class4 cs = new Class4();
             cs.deger1 = c.Faturalars
-                         .Include(x => x.FaturaKalems) // ilişkili kalemleri de yükle
+                         .Include(x => x.FaturaKalems) // ili�kili kalemleri de y�kle
                          .ToList();
 
             return View(cs);
         }
-        public  ActionResult FaturaKaydet(string FaturaSeriNo, string FaturaSıraNo, DateTime Tarih, string VergiDairesi, string saat, string TeslimEden , string TeslimAlan , string Toplam, FaturaKalem[] kalemler)
+        public  ActionResult FaturaKaydet(string FaturaSeriNo, string FaturaSiraNo, DateTime Tarih, string VergiDairesi, string saat, string TeslimEden , string TeslimAlan , string Toplam, FaturaKalem[] kalemler)
         {
             Faturalar f = new Faturalar();
             f.FaturaSeriNo = FaturaSeriNo;
-            f.FaturaSiraNo = FaturaSıraNo;
+            f.FaturaSiraNo = FaturaSiraNo;
             f.Tarih = Tarih;
             f.VergiDairesi = VergiDairesi;
             f.Saat = saat;
@@ -113,8 +114,10 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             }
             c.SaveChanges();
 
-            return Json("İşlem Başarılı", JsonRequestBehavior.AllowGet);
+            return Json("��lem Ba�ar�l�");
             
         }
     }
 }
+
+

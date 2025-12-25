@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using Antlr.Runtime.Misc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -17,21 +18,20 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
        
         public ActionResult Index()
         {
-            List<Departman> degerler = c.Departmans.Where(x => x.Durum).ToList(); //Değerleri ekrana getirmek için
+            List<Departman> degerler = c.Departmans.Where(x => x.Durum).ToList(); //De�erleri ekrana getirmek i�in
             return View(degerler);
         }  
 
 
 
-        //Yeni Departman Eklemek İçin
+        //Yeni Departman Eklemek ��in
         [HttpGet]
-        [Authorize(Roles = "A")] //A yetkisine sahip olan kullanıcılar bu işlemi yapabilir.
         public ActionResult DepartmanEkle()
         {
            
             return View();
         }
-        //Yeni Departman Eklemek İçin
+        //Yeni Departman Eklemek ��in
         [HttpPost]
        
         public ActionResult DepartmanEkle(Departman d) 
@@ -44,7 +44,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         
         }
 
-        //Silme işlemi için
+        //Silme i�lemi i�in
         public ActionResult DepartmanSil(int id)
         
         {
@@ -74,7 +74,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         {
             var degerler = c.Personels.Where(x=>x.Departmanid==id).ToList();
             var dpt = c.Departmans.Where(x => x.Departmanid == id).Select(y => y.DepartmanAd).FirstOrDefault();
-            //Controller dan view e veri taşır. 
+            //Controller dan view e veri ta��r. 
             ViewBag.d = dpt;
             return View(degerler);
         }
@@ -92,3 +92,4 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
     }
 }
+

@@ -1,8 +1,10 @@
 ﻿@using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar <!--Veri Tabanı Çağırmak İçin-->
-@using PagedList
-@using PagedList.Mvc
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Fluent
+@using X.PagedList.Web.Common
 <!--Bu sayfada çağıracağın değerler-->
-@model PagedList.IPagedList<Kategori>
+@model X.PagedList.IPagedList<Kategori>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
@@ -35,12 +37,11 @@
 </table>
 
 <!--Sayfalar arası geçiş için-->
-@Html.PagedListPager((IPagedList)Model, sayfa=> Url.Action("Index", new {sayfa}),
-new PagedListRenderOptions
-{
-    LiElementClasses = new List<string>
-    {"page-link"}
-})
+@Html.PagedListPager(Model, sayfa => Url.Action("Index", new { sayfa }), 
+    new PagedListRenderOptions { 
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" }
+    })
 
 
 <a href="/Kategori/KategoriEkle" class="btn btn-primary">Kategori Ekle</a>

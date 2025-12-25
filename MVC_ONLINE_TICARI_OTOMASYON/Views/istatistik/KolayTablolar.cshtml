@@ -1,4 +1,4 @@
-ï»¿@model IEnumerable<MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.SinifGrup>
+@model IEnumerable<MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.SinifGrup>
 @{
     ViewBag.Title = "KolayTablolar";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
@@ -30,7 +30,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>HÄ±zlÄ± BakÄ±ÅŸ TablolarÄ±</h1>
+                            <h1>Hýzlý Bakýþ Tablolarý</h1>
                         </div>
                        
                     </div>
@@ -52,7 +52,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 10px">#</th>
-                                                <th>Kategori AdÄ±</th>
+                                                <th>Kategori Adý</th>
                                                 <th>Progress Bar</th>
                                                 <th style="width: 40px">Oran</th>
                                             </tr>
@@ -60,7 +60,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>1.</td>
-                                                <td>Beyaz EÅŸya</td>
+                                                <td>Beyaz Eþya</td>
                                                 <td>
                                                     <div class="progress progress-xs">
                                                         <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
@@ -70,7 +70,7 @@
                                             </tr>
                                             <tr>
                                                 <td>2.</td>
-                                                <td>KÃ¼Ã§Ã¼k Ev Aletleri</td>
+                                                <td>Küçük Ev Aletleri</td>
                                                 <td>
                                                     <div class="progress progress-xs">
                                                         <div class="progress-bar bg-warning" style="width: 70%"></div>
@@ -114,7 +114,7 @@
                             </div>
                             <!-- /.card -->
                           
-                            @Html.Action("Partial1","istatistik")
+                            @* TODO: ViewComponent kullan *@ @* @Html.Action("Partial1","istatistik") *@
                             
                             <!-- /.card -->
                         </div>
@@ -122,7 +122,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">MÃ¼ÅŸteri Åžehir Tablosu</h3>
+                                    <h3 class="card-title">Müþteri Þehir Tablosu</h3>
 
                                     <div class="card-tools">
                                         
@@ -134,7 +134,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 10px">#</th>
-                                                <th>Åžehir</th>
+                                                <th>Þehir</th>
                                                 <th>Progress Bar</th>
                                                 <th style="width: 40px">Adet</th>
                                             </tr>
@@ -182,15 +182,15 @@
                             </div>
                             <!-- /.card -->
 
-                            @Html.Action("Partial4","istatistik")
+                            @* TODO: ViewComponent kullan *@ @* @Html.Action("Partial4","istatistik") *@
                             <!-- /.card -->
                         </div>
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
-                    @Html.Action("Partial2","istatistik")
+                    @* TODO: ViewComponent kullan *@ @* @Html.Action("Partial2","istatistik") *@
                     <!-- /.row -->
-                    @Html.Action("Partial3","istatistik")
+                    @* TODO: ViewComponent kullan *@ @* @Html.Action("Partial3","istatistik") *@
                     <!-- /.row -->
                 </div><!-- /.container-fluid -->
             </section>
@@ -216,4 +216,5 @@
 </body>
 </html>
 <h2>Basit Tablolar</h2>
+
 

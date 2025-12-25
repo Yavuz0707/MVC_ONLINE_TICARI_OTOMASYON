@@ -1,11 +1,13 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
-//Ä°lk Ã¶nce controller oluÅŸturulur. Daha sonra ilgili view'lar oluÅŸturulacaktÄ±r.
+//Ýlk önce controller oluþturulur. Daha sonra ilgili view'lar oluþturulacaktýr.
 
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
@@ -13,21 +15,21 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
     [AllowAnonymous]
     public class CariController : BaseController
     {
-        // Context artÄ±k BaseController'dan geliyor, yeniden tanÄ±mlamaya gerek yok
+        // Context artýk BaseController'dan geliyor, yeniden tanýmlamaya gerek yok
         // Context c = new Context();
 
         // GET: Cari
         public ActionResult Index()
         {
 
-            var degerler = c.Carilers.Where(x=>x.Durum == true).ToList(); //Cariler tablosundaki tÃ¼m verileri listele
-            //Durum alanÄ± true olan carileri listele
+            var degerler = c.Carilers.Where(x=>x.Durum == true).ToList(); //Cariler tablosundaki tüm verileri listele
+            //Durum alaný true olan carileri listele
 
             return View(degerler);
         }
 
 
-        //Cari Ekleme SayfasÄ±.
+        //Cari Ekleme Sayfasý.
 
         [HttpGet]
         public ActionResult CariEkle()
@@ -39,11 +41,11 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         {
             p.Durum = true; //Cari aktif olarak ekleniyor
             c.Carilers.Add(p); //Yeni cari ekleme
-            c.SaveChanges(); //DeÄŸiÅŸiklikleri kaydet
-            return RedirectToAction("Index"); //Ä°ndex sayfasÄ±na yÃ¶nlendir
+            c.SaveChanges(); //Deðiþiklikleri kaydet
+            return RedirectToAction("Index"); //Ýndex sayfasýna yönlendir
         }
 
-        //Silme iÅŸlemi iÃ§in
+        //Silme iþlemi için
         public ActionResult CariSil(int id)
 
         {
@@ -54,38 +56,39 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         }
 
-        //Carilerde gÃ¼ncelleme iÅŸlemi iÃ§in cari getirme
+        //Carilerde güncelleme iþlemi için cari getirme
 
         public ActionResult CariGetir(int id)
         {
             var car = c.Carilers.Find(id);
-            return View("CariGetir", car); //CariGetir view'Ä±na yÃ¶nlendir
+            return View("CariGetir", car); //CariGetir view'ýna yönlendir
         }
 
-        //GÃ¼ncelleme iÅŸlemi iÃ§in
+        //Güncelleme iþlemi için
 
         public ActionResult CariGuncelle(Cariler p)
         {
-            if (!ModelState.IsValid) //Model doÄŸrulama kontrolÃ¼
+            if (!ModelState.IsValid) //Model doðrulama kontrolü
             {
-                return View("CariGetir", p); //Hata varsa CariGetir view'Ä±na geri dÃ¶n
+                return View("CariGetir", p); //Hata varsa CariGetir view'ýna geri dön
             }
             var car = c.Carilers.Find(p.Cariid);
             car.CariAd = p.CariAd;
             car.CariSoyad = p.CariSoyad;
             car.CariSehir = p.CariSehir;
             car.CariMail = p.CariMail;
-            c.SaveChanges(); //DeÄŸiÅŸiklikleri kaydet
-            return RedirectToAction("Index"); //Ä°ndex sayfasÄ±na yÃ¶nlendir
+            c.SaveChanges(); //Deðiþiklikleri kaydet
+            return RedirectToAction("Index"); //Ýndex sayfasýna yönlendir
         }
 
-        //Carinin YaptÄ±ÄŸÄ± SatÄ±ÅŸlarÄ± Listeleme
+        //Carinin Yaptýðý Satýþlarý Listeleme
         public ActionResult MusteriSatis (int id)
         {
-            var degerler = c.SatisHarekets.Where(x => x.Cariid == id).ToList(); //Cariid'ye gÃ¶re satÄ±ÅŸlarÄ± listele
-            var cr = c.Carilers.Where(x => x.Cariid == id).Select(y => y.CariAd + " " + y.CariSoyad).FirstOrDefault(); // Cari adÄ±nÄ± ve soyadÄ±nÄ± al
-            ViewBag.cari = cr; //Cari adÄ±nÄ± ViewBag'e ata
-            return View(degerler); //SatÄ±ÅŸlarÄ± view'a gÃ¶nder
+            var degerler = c.SatisHarekets.Where(x => x.Cariid == id).ToList(); //Cariid'ye göre satýþlarý listele
+            var cr = c.Carilers.Where(x => x.Cariid == id).Select(y => y.CariAd + " " + y.CariSoyad).FirstOrDefault(); // Cari adýný ve soyadýný al
+            ViewBag.cari = cr; //Cari adýný ViewBag'e ata
+            return View(degerler); //Satýþlarý view'a gönder
         }
     }
 }
+

@@ -1,10 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.Security;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -38,18 +45,27 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
 
         [HttpPost]
-        public ActionResult CariLogin1(Cariler p)
+        public async Task<ActionResult> CariLogin1(Cariler p)
         {
 
             var bilgiler = c.Carilers.FirstOrDefault(x => x.CariMail == p.CariMail && x.CariSifre == p.CariSifre);
             if(bilgiler != null)
             {
-                FormsAuthentication.SetAuthCookie(bilgiler.CariMail, false);
-                Session["CariMail"] = bilgiler.CariMail.ToString();
+                // ASP.NET Core Authentication
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, bilgiler.CariMail),
+                    new Claim(ClaimTypes.Role, "Cari")
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                
+                HttpContext.Session.SetString("CariMail", bilgiler.CariMail);
                 return RedirectToAction("Index", "CariPanel");  
 
             }
             else { 
+                TempData["HataMesaji"] = "Hatalı giriş! E-mail veya şifre yanlış. Lütfen tekrar deneyiniz.";
                 return RedirectToAction("Index", "Login");
 
             }
@@ -62,34 +78,42 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdminLogin(Admin p)
+        public async Task<ActionResult> AdminLogin(Admin p)
         {
             if (string.IsNullOrEmpty(p.KullaniciAd) || string.IsNullOrEmpty(p.Sifre))
             {
-                ViewBag.Hata = "Kullanıcı adı ve şifre boş bırakılamaz!";
-                return View("Index");
+                TempData["HataMesaji"] = "Kullanıcı adı ve şifre boş bırakılamaz!";
+                return RedirectToAction("Index", "Login");
             }
 
             var bilgiler = c.Admins.FirstOrDefault(x => x.KullaniciAd == p.KullaniciAd && x.Sifre == p.Sifre);
             if(bilgiler != null)
             {
-                FormsAuthentication.SetAuthCookie(bilgiler.KullaniciAd, false);
-                Session["KullaniciAd"] = bilgiler.KullaniciAd.ToString();
-                Session["Yetki"] = bilgiler.Yetki;
+                // ASP.NET Core Authentication
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, bilgiler.KullaniciAd),
+                    new Claim(ClaimTypes.Role, bilgiler.Yetki)
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                
+                HttpContext.Session.SetString("KullaniciAd", bilgiler.KullaniciAd);
+                HttpContext.Session.SetString("Yetki", bilgiler.Yetki);
                 return RedirectToAction("Index", "Kategori");
             }
             else
             {
-                ViewBag.Hata = "Kullanıcı adı veya şifre hatalı!";
-                return View("Index");
+                TempData["HataMesaji"] = "Hatalı giriş! Kullanıcı adı veya şifre yanlış. Lütfen tekrar deneyiniz.";
+                return RedirectToAction("Index", "Login");
             }
         }
 
-        public ActionResult Logout()
+        public async Task<ActionResult> Logout()
         {
-            FormsAuthentication.SignOut();
-            Session.Clear();
-            Session.Abandon();
+            // ASP.NET Core Sign Out
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
 
@@ -103,3 +127,5 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
     }
 }
+
+

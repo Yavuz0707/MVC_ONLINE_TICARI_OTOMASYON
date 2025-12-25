@@ -1,9 +1,11 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar; // Assuming you have a Models namespace
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -14,13 +16,13 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         Context c = new Context(); // Assuming you have a Context class for database access
         public ActionResult Index()
         {
-            var deger1 = c.Carilers.Count().ToString();    // Count of Carilers - ViewBag'a aktarÄ±lÄ±yor
+            var deger1 = c.Carilers.Count().ToString();    // Count of Carilers - ViewBag'a aktarýlýyor
             ViewBag.d1 = deger1; 
             var deger2 = c.Uruns.Count().ToString();
             ViewBag.d2 = deger2;
             var deger3 = c.Kategoris.Count().ToString();
             ViewBag.d3 = deger3;
-            var deger4 = (from x in c.Carilers select x.CariSehir).Distinct().Count().ToString(); // Carilerin iÃ§erisinden ÅŸehir sayÄ±sÄ± Ã§ekmek iÃ§in bÃ¶yle yaptÄ±k
+            var deger4 = (from x in c.Carilers select x.CariSehir).Distinct().Count().ToString(); // Carilerin içerisinden þehir sayýsý çekmek için böyle yaptýk
             ViewBag.d4 = deger4;
          
             var yapilacaklar = c.Yapilacaks.ToList(); // Assuming Yapilacak is a model class
@@ -29,3 +31,5 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
     }
 }
+
+

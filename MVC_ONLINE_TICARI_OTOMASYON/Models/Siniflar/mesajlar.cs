@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
 {
-    public class mesajlar
+    public class Mesajlar
     {
         [Key] //Üzerinde bulunduğu sütunu birincil anahtar yapar.
         public int MesajID { get; set; }

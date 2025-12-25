@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
 using System.Data.Entity;
 using MVC_ONLINE_TICARI_OTOMASYON.Migrations;
 
@@ -17,11 +14,11 @@ namespace MVC_ONLINE_TICARI_OTOMASYON
             // Veritabanı migration'larını otomatik çalıştır
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<Models.Siniflar.Context, Configuration>());
             
-            // GlobalFilters.Filters.Add(new AuthorizeAttribute()); // Tüm sayfalara authorize zorunluluğu kaldırıldı
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            // .NET 9'da bu yapılandırmalar Program.cs'de yapılacak
+            // AreaRegistration.RegisterAllAreas();
+            // FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            // RouteConfig.RegisterRoutes(RouteTable.Routes);
+            // BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
         protected void Application_Error()

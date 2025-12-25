@@ -1,10 +1,12 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -16,42 +18,42 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         public ActionResult Index()
         {
 
-            var deger1 = c.Carilers.Count().ToString(); //Toplam mÃ¼ÅŸteri sayÄ±sÄ±nÄ± alÄ±r.
-            ViewBag.d1 = deger1; //Toplam mÃ¼ÅŸteri sayÄ±sÄ±nÄ± ViewBag'e atar.
+            var deger1 = c.Carilers.Count().ToString(); //Toplam müþteri sayýsýný alýr.
+            ViewBag.d1 = deger1; //Toplam müþteri sayýsýný ViewBag'e atar.
             var deger2 = c.Uruns.Count().ToString();
             ViewBag.d2 = deger2;
             var deger3 = c.Personels.Count().ToString();
             ViewBag.d3 = deger3;
             var deger4 = c.Kategoris.Count().ToString();
             ViewBag.d4 = deger4;
-            var deger5 = c.Uruns.Sum(x => x.Stok).ToString(); //Toplam stok sayÄ±sÄ±nÄ± alÄ±r.
+            var deger5 = c.Uruns.Sum(x => x.Stok).ToString(); //Toplam stok sayýsýný alýr.
             ViewBag.d5 = deger5;
-            var deger6 = (from x in c.Uruns select x.Marka).Distinct().Count().ToString(); //FarklÄ± marka sayÄ±sÄ±nÄ± alÄ±r.TekrarsÄ±z olarak.
+            var deger6 = (from x in c.Uruns select x.Marka).Distinct().Count().ToString(); //Farklý marka sayýsýný alýr.Tekrarsýz olarak.
             ViewBag.d6 = deger6;
             var deger7 = c.Uruns.Count(x => x.Stok <= 20).ToString();
             ViewBag.d7 = deger7;
-            var deger8 = (from x in c.Uruns orderby x.SatisFiyat descending select x.UrunAd).FirstOrDefault(); //En yÃ¼ksek satÄ±ÅŸ fiyatÄ±na sahip Ã¼rÃ¼nÃ¼n adÄ±nÄ± alÄ±r.
+            var deger8 = (from x in c.Uruns orderby x.SatisFiyat descending select x.UrunAd).FirstOrDefault(); //En yüksek satýþ fiyatýna sahip ürünün adýný alýr.
             ViewBag.d8 = deger8;
             var deger9 = (from x in c.Uruns orderby x.SatisFiyat ascending select x.UrunAd).FirstOrDefault();
             ViewBag.d9 = deger9;
-            var deger10 = c.Uruns.Count(x => x.UrunAd == "Buz DolabÄ±").ToString();
+            var deger10 = c.Uruns.Count(x => x.UrunAd == "Buz Dolabý").ToString();
             ViewBag.d10 = deger10;
             var deger11 = c.Uruns.Count(x => x.UrunAd == "Laptop").ToString();
             ViewBag.d11 = deger11;
-            var deger12 = c.Uruns.GroupBy(x => x.Marka).OrderByDescending(z => z.Count()).Select(y => y.Key).FirstOrDefault(); //En Ã§ok Ã¼rÃ¼ne sahip markayÄ± alÄ±r.
+            var deger12 = c.Uruns.GroupBy(x => x.Marka).OrderByDescending(z => z.Count()).Select(y => y.Key).FirstOrDefault(); //En çok ürüne sahip markayý alýr.
             ViewBag.d12 = deger12;
 
-            var deger13 = c.Uruns.Where(u => u.Urunid == (c.SatisHarekets.GroupBy(x => x.Urunid).OrderByDescending(z => z.Count()).Select(y => y.Key).FirstOrDefault())).Select(k => k.UrunAd).FirstOrDefault(); //En Ã§ok satÄ±lan Ã¼rÃ¼nÃ¼n ID'sini alÄ±r.
+            var deger13 = c.Uruns.Where(u => u.Urunid == (c.SatisHarekets.GroupBy(x => x.Urunid).OrderByDescending(z => z.Count()).Select(y => y.Key).FirstOrDefault())).Select(k => k.UrunAd).FirstOrDefault(); //En çok satýlan ürünün ID'sini alýr.
             ViewBag.d13 = deger13;
-            var deger14 = c.SatisHarekets.Sum(x => x.ToplamTutar).ToString(); //Toplam satÄ±ÅŸ tutarÄ±nÄ± alÄ±r.
+            var deger14 = c.SatisHarekets.Sum(x => x.ToplamTutar).ToString(); //Toplam satýþ tutarýný alýr.
             ViewBag.d14 = deger14;
 
-            DateTime bugÃ¼n = DateTime.Today; //BugÃ¼nÃ¼n tarihini alÄ±r.
-            var deger15 = c.SatisHarekets.Count(x => x.Tarih == bugÃ¼n).ToString(); //BugÃ¼n yapÄ±lan satÄ±ÅŸ sayÄ±sÄ±nÄ± alÄ±r.
+            DateTime bugün = DateTime.Today; //Bugünün tarihini alýr.
+            var deger15 = c.SatisHarekets.Count(x => x.Tarih == bugün).ToString(); //Bugün yapýlan satýþ sayýsýný alýr.
             ViewBag.d15 = deger15;
 
             var deger16 = c.SatisHarekets
-               .Where(x => x.Tarih == bugÃ¼n)
+               .Where(x => x.Tarih == bugün)
                .Sum(y => (decimal?)y.ToplamTutar) ?? 0;
             ViewBag.d16 = deger16.ToString();
 
@@ -68,7 +70,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                             Sayi = g.Count()
                         };
 
-            return View(sorgu.ToList()); // âœ… ToList() ile View'a model olarak gÃ¶nderiyoruz
+            return View(sorgu.ToList()); // ? ToList() ile View'a model olarak gönderiyoruz
         }
 
         public PartialViewResult Partial1()
@@ -77,8 +79,8 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                          group x by x.Departman.DepartmanAd into g
                          select new SinifGrup2
                          {
-                             Departman = g.Key, // Departman ID'sini alÄ±r
-                             Sayi = g.Count()  // Personel sayÄ±sÄ±nÄ± alÄ±r
+                             Departman = g.Key, // Departman ID'sini alýr
+                             Sayi = g.Count()  // Personel sayýsýný alýr
                          };
 
             return PartialView(sorgu2.ToList());
@@ -104,8 +106,8 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                          group x by x.Marka into g
                          select new SinifGrup3
                          {
-                             marka = g.Key, // Departman ID'sini alÄ±r
-                             sayi = g.Count()  // Personel sayÄ±sÄ±nÄ± alÄ±r
+                             marka = g.Key, // Departman ID'sini alýr
+                             sayi = g.Count()  // Personel sayýsýný alýr
                          };
 
             return PartialView(sorgu.ToList());
@@ -114,3 +116,5 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
     }
 }
+
+

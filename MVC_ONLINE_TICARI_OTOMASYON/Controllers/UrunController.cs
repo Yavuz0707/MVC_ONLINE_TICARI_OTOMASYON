@@ -1,9 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using System.IO;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -12,7 +16,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
     {
         Context c = new Context();
 
-        // Ürün Listeleme
+        // �r�n Listeleme
         public ActionResult Index(string p)
         {
             var urunler = from x in c.Uruns where x.Durum == true select x;
@@ -25,7 +29,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return View(urunler.ToList());
         }
 
-        // Yeni Ürün Ekleme (GET)
+        // Yeni �r�n Ekleme (GET)
         [HttpGet]
         public ActionResult YeniUrun()
         {
@@ -39,17 +43,17 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return View();
         }
 
-        // Yeni Ürün Ekleme (POST)
+        // Yeni �r�n Ekleme (POST)
         [HttpPost]
         public ActionResult YeniUrun(Urun p)
         {
-            p.Durum = true; // yeni eklenen ürün aktif olsun
+            p.Durum = true; // yeni eklenen �r�n aktif olsun
             c.Uruns.Add(p);
             c.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        // Ürün Silme (Soft Delete)
+        // �r�n Silme (Soft Delete)
         public ActionResult UrunSil(int id)
         {
             var deger = c.Uruns.Find(id);
@@ -58,7 +62,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return RedirectToAction("Index");
         }
 
-        // Ürün Getirme (Güncelleme için)
+        // �r�n Getirme (G�ncelleme i�in)
         public ActionResult UrunGetir(int id)
         {
             List<SelectListItem> deger1 = (from x in c.Kategoris.ToList()
@@ -73,8 +77,9 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return View("UrunGetir", urundeger);
         }
 
-        // Ürün Güncelleme
-        public ActionResult UrunGuncelle(Urun p)
+        // �r�n G�ncelleme
+        [HttpPost]
+        public ActionResult UrunGuncelle(Urun p, IFormFile UrunGorselFile)
         {
             var urn = c.Uruns.Find(p.Urunid);
             urn.AlisFiyat = p.AlisFiyat;
@@ -84,20 +89,53 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             urn.SatisFiyat = p.SatisFiyat;
             urn.Stok = p.Stok;
             urn.UrunAd = p.UrunAd;
-            urn.UrunGorsel = p.UrunGorsel;
+
+            // Dosya yükleme işlemi
+            if (UrunGorselFile != null && UrunGorselFile.Length > 0)
+            {
+                // Dosya adını oluştur (güvenli bir isim)
+                var dosyaAdi = Path.GetFileNameWithoutExtension(UrunGorselFile.FileName);
+                var uzanti = Path.GetExtension(UrunGorselFile.FileName);
+                var yeniDosyaAdi = $"{dosyaAdi}_{DateTime.Now.Ticks}{uzanti}";
+                
+                // Kayıt yolu
+                var kayitYolu = Path.Combine("wwwroot", "Image", "urunler");
+                var tamYol = Path.Combine(Directory.GetCurrentDirectory(), kayitYolu);
+                
+                // Klasör yoksa oluştur
+                if (!Directory.Exists(tamYol))
+                {
+                    Directory.CreateDirectory(tamYol);
+                }
+                
+                // Dosyayı kaydet
+                var dosyaYolu = Path.Combine(tamYol, yeniDosyaAdi);
+                using (var stream = new FileStream(dosyaYolu, FileMode.Create))
+                {
+                    UrunGorselFile.CopyTo(stream);
+                }
+                
+                // Veritabanına kaydedilecek yol
+                urn.UrunGorsel = $"/Image/urunler/{yeniDosyaAdi}";
+            }
+            else if (!string.IsNullOrEmpty(p.UrunGorsel))
+            {
+                // Dosya yüklenmemişse mevcut değeri koru
+                urn.UrunGorsel = p.UrunGorsel;
+            }
 
             c.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        // Ürün Listesi
+        // �r�n Listesi
         public ActionResult UrunListesi()
         {
             var degerler = c.Uruns.ToList();
             return View(degerler);
         }
 
-        // Satış Yap (GET)
+        // Sat�� Yap (GET)
         [HttpGet]
         public ActionResult SatisYap(int id)
         {
@@ -113,7 +151,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             var deger1 = c.Uruns.Find(id);
             if (deger1 == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             ViewBag.dgr1 = deger1.Urunid;
@@ -122,7 +160,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return View();
         }
 
-        // Satış Yap (POST)
+        // Sat�� Yap (POST)
         [HttpPost]
         public ActionResult SatisYap(SatisHareket p)
         {
@@ -133,3 +171,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
     }
 }
+
+
+

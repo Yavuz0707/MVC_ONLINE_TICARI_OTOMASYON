@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
-using PagedList;
-using PagedList.Mvc;
+using X.PagedList;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -14,9 +15,9 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
     {
         // GET: Kategori
         Context c = new Context();
-        public ActionResult Index(int sayfa = 1)  //Burada değeri kaç verirseniz oradan başlar.
+        public ActionResult Index(int sayfa = 1)  //Burada de�eri ka� verirseniz oradan ba�lar.
         {
-            var degerler = c.Kategoris.ToList().ToPagedList(sayfa, 5); //Her sayfada 5 tane kategori gösterilecek.
+            var degerler = c.Kategoris.ToList().ToPagedList(sayfa, 5); //Her sayfada 5 tane kategori g�sterilecek.
             return View(degerler);
         }
 
@@ -65,3 +66,4 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
     }
 }
+

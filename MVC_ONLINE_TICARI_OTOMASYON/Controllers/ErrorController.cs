@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -13,45 +15,39 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         public ActionResult Index()
         {
             Response.StatusCode = 500;
-            Response.TrySkipIisCustomErrors = true;
             return View("PageError");
         }
 
         public ActionResult PageError()
         {
-            Response.TrySkipIisCustomErrors = true; //Error sayfasını göster.
             return View();
         }
 
         public ActionResult Page400()
         {
-            Response.StatusCode = 400; //Error kodu
-            Response.TrySkipIisCustomErrors = true;
+            Response.StatusCode = 400;
             return View("PageError");
         }
 
         public ActionResult Page403()
         {
-            Response.StatusCode = 403; //Error kodu
-            Response.TrySkipIisCustomErrors = true;
+            Response.StatusCode = 403;
             return View("PageError");
         }
         
         public ActionResult Page404()
         {
-            Response.StatusCode = 404; //Error kodu
-            Response.TrySkipIisCustomErrors = true;
+            Response.StatusCode = 404;
             return View("PageError");
         }
 
         public ActionResult Page500() 
         {
-            Response.StatusCode = 500; //Error kodu
-            Response.TrySkipIisCustomErrors = true;
+            Response.StatusCode = 500;
             return View("PageError");
         }
 
-        public ActionResult NotFound()
+        public new ActionResult NotFound()
         {
             return Page404();
         }
@@ -61,9 +57,11 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return Page500();
         }
 
-        public ActionResult Unauthorized()
+        public new ActionResult Unauthorized()
         {
             return Page403();
         }
     }
 }
+
+

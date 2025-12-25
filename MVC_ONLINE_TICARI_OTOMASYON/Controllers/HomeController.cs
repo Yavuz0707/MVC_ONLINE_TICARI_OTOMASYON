@@ -1,10 +1,12 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using System.Data.Entity;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -25,7 +27,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                 ViewBag.ToplamSatis = c.SatisHarekets.Count();
                 ViewBag.AktifKargolar = c.KargoDetays.Count();
                 
-                // Son iÅŸlemler
+                // Son iþlemler
                 ViewBag.SonSatislar = c.SatisHarekets
                     .OrderByDescending(x => x.Tarih)
                     .Take(5)
@@ -33,7 +35,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             }
             catch (Exception)
             {
-                // Hata durumunda default deÄŸerler
+                // Hata durumunda default deðerler
                 ViewBag.ToplamUrun = 0;
                 ViewBag.ToplamCari = 0;
                 ViewBag.ToplamPersonel = 0;
@@ -55,8 +57,10 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Ä°letiÅŸim Bilgileri";
+            ViewBag.Message = "Ýletiþim Bilgileri";
             return View();
         }
     }
 }
+
+

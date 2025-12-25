@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Helpers;
-using System.Web.Mvc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -22,33 +23,16 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult Index2()
         {
-            var grafikciz = new Chart(600, 600);
-            grafikciz.AddTitle("Kategori - Ürün Stok Sayısı")
-                     .AddLegend("Stok")
-                     .AddSeries("Değerler",
-                                xValue: new[] { "Beyaz Eşya", "Oyuncak", "Elektronik Eşya", "Küçük Ev Aletleri" },
-                                yValues: new[] { 85, 66, 23, 69 })
-                     .Write();
-
-            return File(grafikciz.ToWebImage().GetBytes(), "image/jpeg");
+            // TODO: Chart sınıfı .NET Core'da yok. Chart.js veya başka bir kütüphane kullanılmalı
+            // var grafikciz = new Chart(600, 600);
+            return View();
         }
 
         // Veri tabanından çekilen verilerle grafik oluşturma
         public ActionResult Index3()
         {
-            ArrayList xvalue = new ArrayList();
-            ArrayList yvalue = new ArrayList();
-
-            var sonuclar = c.Uruns.ToList();
-            sonuclar.ToList().ForEach(x=> xvalue.Add(x.UrunAd));
-            sonuclar.ToList().ForEach(y=> yvalue.Add(y.Stok));
-
-            var grafik = new Chart(800, 800).AddTitle("Stoklar")
-                .AddSeries(chartType: "Pie", name: "Stok", xValue: xvalue, yValues: yvalue);
-            return File(grafik.ToWebImage().GetBytes(), "image/jpeg");
-
-
-            
+            // TODO: Chart sınıfı .NET Core'da yok. Chart.js veya başka bir kütüphane kullanılmalı
+            return View();
         }
 
         public ActionResult Index4()
@@ -60,7 +44,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult VisualizeUrunResult() 
         {
-         return Json(Urunlistesi(), JsonRequestBehavior.AllowGet); //Google chart için json formatında veri döndürüyoruz
+         return Json(Urunlistesi()); //Google chart i�in json format�nda veri d�nd�r�yoruz
         }
         public List<sinif1> Urunlistesi()
         {
@@ -74,7 +58,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
             snf.Add(new sinif1()
             {
-                urunad = "Beyaz Eşya",
+                urunad = "Beyaz E�ya",
                 stok = 150
             });
 
@@ -85,7 +69,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             });
             snf.Add(new sinif1()
             {
-                urunad = "Küçük Ev Aletleri",
+                urunad = "K���k Ev Aletleri",
                 stok = 180
             });
             snf.Add(new sinif1()
@@ -97,7 +81,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return snf;
         }
 
-        //Veri tabanından çekilen verilerle grafik oluşturma - Google Charts
+        //Veri taban�ndan �ekilen verilerle grafik olu�turma - Google Charts
 
         public ActionResult Index5()
         {
@@ -108,7 +92,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         
        {
 
-        return Json(UrunListesi2(), JsonRequestBehavior.AllowGet);
+        return Json(UrunListesi2());
 
         }
 
@@ -141,3 +125,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
 
 }
+
+
+

@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -12,12 +16,11 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
     /// Session kontrolü, kullanıcı bilgileri ve dispose işlemlerini otomatik yapar
     /// NOT: [Authorize] her controller'a ayrı ayrı eklenmeli
     /// </summary>
-    [HandleError]
     public class BaseController : Controller
     {
         protected Context c = new Context();
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             try
             {
@@ -27,14 +30,14 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                     ViewBag.KullaniciAd = User.Identity.Name;
                     
                     // Session'dan bilgileri al
-                    if (Session["KullaniciAd"] != null)
+                    if (HttpContext.Session.GetString("KullaniciAd") != null)
                     {
-                        ViewBag.KullaniciAd = Session["KullaniciAd"].ToString();
-                        ViewBag.Yetki = Session["Yetki"]?.ToString();
+                        ViewBag.KullaniciAd = HttpContext.Session.GetString("KullaniciAd");
+                        ViewBag.Yetki = HttpContext.Session.GetString("Yetki");
                     }
-                    else if (Session["CariMail"] != null)
+                    else if (HttpContext.Session.GetString("CariMail") != null)
                     {
-                        ViewBag.KullaniciAd = Session["CariMail"].ToString();
+                        ViewBag.KullaniciAd = HttpContext.Session.GetString("CariMail");
                         ViewBag.IsCari = true;
                     }
                     else
@@ -43,8 +46,8 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                         var admin = c.Admins.FirstOrDefault(x => x.KullaniciAd == User.Identity.Name);
                         if (admin != null)
                         {
-                            Session["KullaniciAd"] = admin.KullaniciAd;
-                            Session["Yetki"] = admin.Yetki;
+                            HttpContext.Session.SetString("KullaniciAd", admin.KullaniciAd);
+                            HttpContext.Session.SetString("Yetki", admin.Yetki);
                             ViewBag.KullaniciAd = admin.KullaniciAd;
                             ViewBag.Yetki = admin.Yetki;
                         }
@@ -100,3 +103,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
     }
 }
+
+
+

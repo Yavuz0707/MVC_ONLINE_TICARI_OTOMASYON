@@ -1,10 +1,12 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using System.Data.Entity;
 using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
@@ -16,7 +18,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult Index(String p)
         {
-            // KullanÄ±cÄ± bilgilerini ViewBag'e aktar
+            // Kullanýcý bilgilerini ViewBag'e aktar
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.KullaniciAd = User.Identity.Name;
@@ -34,28 +36,28 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         public ActionResult Test()
         {
-            return Content("<h1>KARGO CONTROLLER Ã‡ALIÅžIYOR!</h1><p>Bu mesajÄ± gÃ¶rÃ¼yorsan controller'a eriÅŸebiliyorsun.</p>");
+            return Content("<h1>KARGO CONTROLLER ÇALIÞIYOR!</h1><p>Bu mesajý görüyorsan controller'a eriþebiliyorsun.</p>");
         }
 
         [HttpGet]
         public ActionResult YeniKargo()
         {
-            System.Diagnostics.Debug.WriteLine("===== YeniKargo GET Ã§aÄŸrÄ±ldÄ± =====");
+            System.Diagnostics.Debug.WriteLine("===== YeniKargo GET çaðrýldý =====");
             try
             {
                 ViewBag.takipkod = GenerateTakipKodu();
-                System.Diagnostics.Debug.WriteLine($"Takip kodu Ã¼retildi: {ViewBag.takipkod}");
+                System.Diagnostics.Debug.WriteLine($"Takip kodu üretildi: {ViewBag.takipkod}");
                 
-                // Aktif mÃ¼ÅŸterileri getir
+                // Aktif müþterileri getir
                 var musteriler = c.Carilers
                     .Where(x => x.Durum == true)
                     .OrderBy(x => x.CariAd)
                     .ToList();
                 
-                System.Diagnostics.Debug.WriteLine($"MÃ¼ÅŸteri sayÄ±sÄ±: {musteriler.Count}");
+                System.Diagnostics.Debug.WriteLine($"Müþteri sayýsý: {musteriler.Count}");
                 
                 ViewBag.Musteriler = new SelectList(musteriler, "Cariid", "CariAd");
-                System.Diagnostics.Debug.WriteLine("View dÃ¶ndÃ¼rÃ¼lÃ¼yor...");
+                System.Diagnostics.Debug.WriteLine("View döndürülüyor...");
                 return View();
             }
             catch (Exception ex)
@@ -65,7 +67,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             }
         }
         
-        // MÃ¼ÅŸteriye gÃ¶re satÄ±ÅŸlarÄ± getiren Ajax endpoint
+        // Müþteriye göre satýþlarý getiren Ajax endpoint
         [HttpGet]
         public JsonResult GetMusteriSatislari(int musteriId)
         {
@@ -86,20 +88,20 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                     })
                     .ToList();
                 
-                return Json(satislar, JsonRequestBehavior.AllowGet);
+                return Json(satislar);
             }
             catch (Exception ex)
             {
-                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { error = ex.Message });
             }
         }
         
-        //Yeni Kargo Eklemek Ä°Ã§in
+        //Yeni Kargo Eklemek Ýçin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult YeniKargo(KargoDetay d, int? SatisId)
         {
-            System.Diagnostics.Debug.WriteLine("===== YeniKargo POST Ã§aÄŸrÄ±ldÄ± =====");
+            System.Diagnostics.Debug.WriteLine("===== YeniKargo POST çaðrýldý =====");
             System.Diagnostics.Debug.WriteLine($"TakipKodu: {d?.TakipKodu}");
             System.Diagnostics.Debug.WriteLine($"SatisId: {SatisId}");
             System.Diagnostics.Debug.WriteLine($"Durum: {d?.Durum}");
@@ -111,7 +113,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                 {
                     ViewBag.takipkod = d.TakipKodu;
                     
-                    // MÃ¼ÅŸteri listesini tekrar yÃ¼kle
+                    // Müþteri listesini tekrar yükle
                     var musteriler = c.Carilers
                         .Where(x => x.Durum == true)
                         .OrderBy(x => x.CariAd)
@@ -119,19 +121,19 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                     
                     ViewBag.Musteriler = new SelectList(musteriler, "Cariid", "CariAd");
                     
-                    TempData["Hata"] = "LÃ¼tfen tÃ¼m alanlarÄ± doldurun ve bir satÄ±ÅŸ seÃ§in!";
+                    TempData["Hata"] = "Lütfen tüm alanlarý doldurun ve bir satýþ seçin!";
                     return View(d);
                 }
 
-                // Bu satÄ±ÅŸ iÃ§in zaten kargo oluÅŸturulmuÅŸ mu kontrol et
+                // Bu satýþ için zaten kargo oluþturulmuþ mu kontrol et
                 var mevcutKargo = c.KargoDetays.FirstOrDefault(k => k.SatisId == SatisId.Value);
                 if (mevcutKargo != null)
                 {
-                    TempData["Hata"] = $"Bu satÄ±ÅŸ iÃ§in zaten kargo oluÅŸturulmuÅŸ! Takip Kodu: {mevcutKargo.TakipKodu}";
+                    TempData["Hata"] = $"Bu satýþ için zaten kargo oluþturulmuþ! Takip Kodu: {mevcutKargo.TakipKodu}";
                     return RedirectToAction("Index");
                 }
 
-                // SatÄ±ÅŸ bilgilerini al
+                // Satýþ bilgilerini al
                 var satis = c.SatisHarekets
                     .Include(s => s.Cariler)
                     .Include(s => s.Urun)
@@ -139,7 +141,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
                 if (satis == null)
                 {
-                    TempData["Hata"] = "SeÃ§ilen satÄ±ÅŸ bulunamadÄ±!";
+                    TempData["Hata"] = "Seçilen satýþ bulunamadý!";
                     return RedirectToAction("Index");
                 }
 
@@ -160,16 +162,16 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
                         .Select(x => x.PropertyName + ": " + x.ErrorMessage);
                     
                     var fullErrorMessage = string.Join("; ", errorMessages);
-                    TempData["Hata"] = "Validation hatasÄ±: " + fullErrorMessage;
+                    TempData["Hata"] = "Validation hatasý: " + fullErrorMessage;
                     return RedirectToAction("Index");
                 }
                 
-                TempData["Mesaj"] = $"Kargo baÅŸarÄ±yla oluÅŸturuldu! Takip Kodu: {d.TakipKodu} - AlÄ±cÄ±: {satis.Cariler.CariAd} {satis.Cariler.CariSoyad}";
+                TempData["Mesaj"] = $"Kargo baþarýyla oluþturuldu! Takip Kodu: {d.TakipKodu} - Alýcý: {satis.Cariler.CariAd} {satis.Cariler.CariSoyad}";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                TempData["Hata"] = "Kargo oluÅŸturulurken hata: " + ex.Message;
+                TempData["Hata"] = "Kargo oluþturulurken hata: " + ex.Message;
                 return RedirectToAction("Index");
             }
         }
@@ -179,7 +181,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             var kargo = c.KargoDetays.Find(id);
             if (kargo == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(kargo);
         }
@@ -198,7 +200,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         {
             if (string.IsNullOrEmpty(takipKodu))
             {
-                ViewBag.Hata = "LÃ¼tfen takip kodu giriniz!";
+                ViewBag.Hata = "Lütfen takip kodu giriniz!";
                 return View();
             }
 
@@ -206,7 +208,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
             if (kargo == null)
             {
-                ViewBag.Hata = "Girilen takip koduna ait kargo bulunamadÄ±!";
+                ViewBag.Hata = "Girilen takip koduna ait kargo bulunamadý!";
                 return View();
             }
 
@@ -222,7 +224,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             var kargo = c.KargoDetays.Find(id);
             if (kargo == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(kargo);
         }
@@ -239,7 +241,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             var mevcutKargo = c.KargoDetays.Find(kargo.KargoDetayid);
             if (mevcutKargo == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             mevcutKargo.Aciklama = kargo.Aciklama;
@@ -248,7 +250,7 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             
             c.SaveChanges();
             
-            TempData["Mesaj"] = "Kargo baÅŸarÄ±yla gÃ¼ncellendi!";
+            TempData["Mesaj"] = "Kargo baþarýyla güncellendi!";
             return RedirectToAction("Index");
         }
 
@@ -285,3 +287,5 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
         }
     }
 }
+
+

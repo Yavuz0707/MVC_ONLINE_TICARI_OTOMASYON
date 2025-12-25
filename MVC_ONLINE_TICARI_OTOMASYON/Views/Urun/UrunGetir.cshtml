@@ -8,7 +8,7 @@
 <br />
 <h2>Ürün Güncelleme Sayfası</h2>
 <br />
-@using (Html.BeginForm("UrunGuncelle", "Urun", FormMethod.Post))
+@using (Html.BeginForm("UrunGuncelle", "Urun", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(x=>x.Urunid) //Hata almamak için yazıldı.
     @Html.LabelFor(x => x.UrunAd)
@@ -31,14 +31,40 @@
     @*@Html.TextBoxFor(x => x.Kategoriid, new { @class = "form-control" })*@
     <br />
     @Html.LabelFor(x => x.UrunGorsel)
-    @Html.TextBoxFor(x => x.UrunGorsel, new { @class = "form-control" })
+    <div class="input-group mb-3">
+        @Html.TextBoxFor(x => x.UrunGorsel, new { @class = "form-control", @readonly = "readonly", placeholder = "Görsel yolu otomatik eklenecek" })
+        <label class="input-group-text" for="UrunGorselFile" style="cursor: pointer;">
+            <i class="fas fa-upload"></i> Resim Seç
+        </label>
+    </div>
+    <input type="file" id="UrunGorselFile" name="UrunGorselFile" accept="image/*" style="display: none;" onchange="previewImage(this)" />
+    <div id="imagePreview" class="mb-3" style="display: none;">
+        <img id="preview" src="" alt="Ürün Görseli" class="img-thumbnail" style="max-width: 300px; max-height: 300px;" />
+    </div>
+    @if (!string.IsNullOrEmpty(Model.UrunGorsel))
+    {
+        <div class="mb-3">
+            <label>Mevcut Görsel:</label><br />
+            <img src="@Model.UrunGorsel" alt="Mevcut Görsel" class="img-thumbnail" style="max-width: 300px; max-height: 300px;" />
+        </div>
+    }
     <br />
     @Html.LabelFor(x => x.Durum)
     @Html.TextBoxFor(x => x.Durum, new { @class = "form-control" })
     <br />
 
     <button class="btn btn-warning">Güncelle</button>
-
-
-
 }
+
+<script>
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>

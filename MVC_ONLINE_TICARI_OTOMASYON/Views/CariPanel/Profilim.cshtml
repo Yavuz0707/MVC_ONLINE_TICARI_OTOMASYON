@@ -1,0 +1,311 @@
+@model MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar.Cariler
+@{
+    ViewBag.Title = "Profilim";
+    Layout = "~/Views/Shared/_CariLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<style>
+    .profile-photo-container {
+        position: relative;
+        display: inline-block;
+    }
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #007bff;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .profile-photo:hover {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+    .photo-upload-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+        cursor: pointer;
+    }
+    .profile-photo-container:hover .photo-upload-overlay {
+        opacity: 1;
+    }
+    .photo-upload-overlay i {
+        color: white;
+        font-size: 30px;
+    }
+    #profilFotoInput {
+        display: none;
+    }
+</style>
+
+<!-- Content Header -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Profilim</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/CariPanel/Index">Ana Sayfa</a></li>
+                    <li class="breadcrumb-item active">Profilim</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Profil Fotoğrafı Kartı -->
+            <div class="col-md-3">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <div class="profile-photo-container">
+                                @if (!string.IsNullOrEmpty(Model.ProfilFoto))
+                                {
+                                    <img class="profile-photo" id="profilFotoImg" src="@Model.ProfilFoto" alt="Profil Fotoğrafı">
+                                }
+                                else
+                                {
+                                    <img class="profile-photo" id="profilFotoImg" src="~/AdminLTE-3.0.4/dist/img/user4-128x128.jpg" alt="Profil Fotoğrafı">
+                                }
+                                <div class="photo-upload-overlay" onclick="document.getElementById('profilFotoInput').click()">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="profilFotoInput" accept="image/*" onchange="profilFotoGuncelle(this)">
+                        </div>
+
+                        <h3 class="profile-username text-center mt-3">@Model.CariAd @Model.CariSoyad</h3>
+                        <p class="text-muted text-center">@Model.CariMail</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Şehir</b> <a class="float-right">@Model.CariSehir</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Durum</b> 
+                                <a class="float-right">
+                                    @if (Model.Durum)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profil Düzenleme Formu -->
+            <div class="col-md-9">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Profil Bilgilerimi Düzenle</h3>
+                    </div>
+                    <form method="post" action="/CariPanel/CariBilgiGuncelle">
+                        <div class="card-body">
+                            <input type="hidden" name="Cariid" value="@Model.Cariid" />
+                            <input type="hidden" name="Durum" value="@Model.Durum" />
+                            <input type="hidden" name="ProfilFoto" value="@Model.ProfilFoto" />
+
+                            <div class="form-group">
+                                <label for="CariAd">Ad</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="CariAd" name="CariAd" value="@Model.CariAd" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="CariSoyad">Soyad</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="CariSoyad" name="CariSoyad" value="@Model.CariSoyad" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="CariMail">E-posta</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" class="form-control" id="CariMail" name="CariMail" value="@Model.CariMail" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="CariSehir">Şehir</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="CariSehir" name="CariSehir" value="@Model.CariSehir">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="CariSifre">Yeni Şifre (Boş bırakırsanız şifreniz değişmez)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    </div>
+                                    <input type="password" class="form-control" id="CariSifre" name="CariSifre" placeholder="Yeni şifrenizi girin">
+                                </div>
+                                <small class="form-text text-muted">Şifrenizi değiştirmek istemiyorsanız bu alanı boş bırakın.</small>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                            </button>
+                            <a href="/CariPanel/Index" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> İptal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/AdminLTE-3.0.4/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/AdminLTE-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/AdminLTE-3.0.4/dist/js/adminlte.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Sayfa yüklendiğinde başarı mesajını göster
+        @if (TempData["Basari"] != null)
+        {
+            <text>
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı!',
+                text: '@Html.Raw(TempData["Basari"])',
+                confirmButtonText: 'Tamam',
+                confirmButtonColor: '#28a745',
+                width: '400px'
+            });
+            </text>
+        }
+
+        // Profil fotoğrafı güncelleme
+        function profilFotoGuncelle(input) {
+            if (input.files && input.files[0]) {
+                var file = input.files[0];
+                
+                // Dosya boyutu kontrolü (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: 'Dosya boyutu 5MB\'dan küçük olmalıdır',
+                        confirmButtonColor: '#d33',
+                        width: '400px'
+                    });
+                    return;
+                }
+
+                // Dosya tipi kontrolü
+                var allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: 'Sadece jpg, jpeg, png ve gif formatları desteklenir',
+                        confirmButtonColor: '#d33',
+                        width: '400px'
+                    });
+                    return;
+                }
+
+                // Loading göster
+                Swal.fire({
+                    title: 'Yükleniyor...',
+                    text: 'Fotoğrafınız yükleniyor, lütfen bekleyin',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    width: '400px'
+                });
+
+                // FormData oluştur ve gönder
+                var formData = new FormData();
+                formData.append('profilFoto', file);
+
+                fetch('/CariPanel/ProfilFotoGuncelle', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Fotoğrafı güncelle
+                        document.getElementById('profilFotoImg').src = data.photoUrl + '?t=' + new Date().getTime();
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı!',
+                            text: data.message,
+                            confirmButtonColor: '#28a745',
+                            width: '400px'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: data.message,
+                            confirmButtonColor: '#d33',
+                            width: '400px'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: 'Bir hata oluştu: ' + error,
+                        confirmButtonColor: '#d33',
+                        width: '400px'
+                    });
+                });
+            }
+        }
+    </script>
+</section>
+<!-- /.content -->
