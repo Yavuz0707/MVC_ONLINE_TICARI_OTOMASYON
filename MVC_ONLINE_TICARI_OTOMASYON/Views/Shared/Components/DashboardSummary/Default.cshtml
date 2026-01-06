@@ -1,0 +1,87 @@
+@model MVC_ONLINE_TICARI_OTOMASYON.ViewComponents.DashboardSummaryModel
+
+<!--ViewComponent: Dashboard Özet Kartları-->
+
+<div class="row">
+    <!-- Toplam Ürün -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@Model.ToplamUrun</h3>
+                <p>Toplam Ürün</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-box"></i>
+            </div>
+            <a href="@Url.Action("Index", "Urun")" class="small-box-footer">
+                Detaylı Bilgi <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Toplam Kategori -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@Model.ToplamKategori</h3>
+                <p>Toplam Kategori</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-tags"></i>
+            </div>
+            <a href="@Url.Action("Index", "Kategori")" class="small-box-footer">
+                Detaylı Bilgi <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Toplam Cari -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>@Model.ToplamCari</h3>
+                <p>Toplam Müşteri</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <a href="@Url.Action("Index", "Cariler")" class="small-box-footer">
+                Detaylı Bilgi <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Kritik Stok -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>@Model.KritikStok</h3>
+                <p>Kritik Stok Uyarısı</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <a href="@Url.Action("Index", "Urun")" class="small-box-footer">
+                Detaylı Bilgi <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="info-box bg-gradient-info">
+            <span class="info-box-icon"><i class="fas fa-shopping-cart"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Toplam Satış İşlemi</span>
+                <span class="info-box-number">@Model.ToplamSatis</span>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 70%"></div>
+                </div>
+                <span class="progress-description">
+                    Personel Sayısı: @Model.ToplamPersonel
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

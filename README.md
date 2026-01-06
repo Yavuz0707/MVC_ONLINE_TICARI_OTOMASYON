@@ -4,27 +4,23 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-MVC-512BD4?style=for-the-badge&logo=.net)
-![Entity Framework](https://img.shields.io/badge/Entity_Framework-Core-512BD4?style=for-the-badge)
+![Entity Framework](https://img.shields.io/badge/Entity_Framework-6.5.1-512BD4?style=for-the-badge)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.2.3-7952B3?style=for-the-badge&logo=bootstrap)
-![AdminLTE](https://img.shields.io/badge/AdminLTE-3.0.4-3c8dbc?style=for-the-badge)
+![ViewComponent](https://img.shields.io/badge/ViewComponent-✓-success?style=for-the-badge)
 
 ---
 
 ## 📋 İçindekiler
 
 - [Özellikler](#-özellikler)
+- [ViewComponent Desteği](#-viewcomponent-desteği)
 - [Teknolojiler](#-teknolojiler)
 - [Sistem Gereksinimleri](#-sistem-gereksinimleri)
 - [Kurulum](#-kurulum)
 - [Veritabanı Yapılandırması](#-veritabanı-yapılandırması)
 - [Kullanım](#-kullanım)
 - [Proje Yapısı](#-proje-yapısı)
-- [Modüller](#-modüller)
-- [API Endpoints](#-api-endpoints)
-- [Ekran Görüntüleri](#-ekran-görüntüleri)
-- [Güvenlik](#-güvenlik)
-- [Katkıda Bulunma](#-katkıda-bulunma)
-- [İletişim](#-iletişim)
+- [Dokümantasyon](#-dokümantasyon)
 
 ---
 
@@ -49,6 +45,27 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 - 💰 **Finansal Raporlar**: Gelir-gider analizi ve kar/zarar hesaplamaları
 - 📋 **Ciro Takibi**: Müşteri bazlı ciro raporları
 
+---
+
+## 🧩 ViewComponent Desteği
+
+Proje modern ASP.NET Core ViewComponent yapısını tam olarak desteklemektedir.
+
+### 🎨 Kullanılan ViewComponent'ler
+
+1. **PersonelDepartmanViewComponent** - Departman personel istatistikleri
+2. **CarilerListViewComponent** - Müşteri listesi görüntüleme
+3. **UrunlerListViewComponent** - Ürün listesi görüntüleme
+4. **MarkaIstatistikViewComponent** - Marka bazlı istatistikler
+5. **CariMesajlarViewComponent** - Müşteri mesaj yönetimi
+6. **DashboardSummaryViewComponent** - Dashboard özet kartları
+
+### 📚 ViewComponent Dokümantasyonu
+
+Detaylı kullanım için:
+- [ViewComponent Kullanım Rehberi](MVC_ONLINE_TICARI_OTOMASYON/VIEWCOMPONENT_KULLANIM.md)
+- [ViewComponent Uygulama Raporu](MVC_ONLINE_TICARI_OTOMASYON/VIEWCOMPONENT_UYGULAMA_RAPORU.md)
+
 ### 🔔 Bildirim Sistemi
 
 - 🔕 **Gerçek Zamanlı Bildirimler**: Önemli olaylar için anlık bildirimler
@@ -63,6 +80,9 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 - 📱 **Mobil Uyumlu**: Mobil cihazlar için optimize edilmiş
 - 🌙 **Dark/Light Mode**: Tema değiştirme desteği
 - 🔍 **Gelişmiş Arama**: DataTables ile güçlü filtreleme ve arama
+- 🧩 **ViewComponent**: Yeniden kullanılabilir UI bileşenleri
+- 🏷️ **Custom Tag Helpers**: Özel HTML tag helper'ları
+- 🎨 **Custom HTML Helpers**: Özel HTML helper metodları
 
 ### 🔐 Güvenlik ve Yetkilendirme
 
@@ -98,6 +118,7 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 | Teknoloji | Versiyon | Açıklama |
 |-----------|----------|----------|
 | ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.2.3-7952B3?logo=bootstrap) | 5.2.3 | CSS Framework |
+| ![ViewComponent](https://img.shields.io/badge/ViewComponent-Implemented-success) | - | Reusable UI Components |
 | ![jQuery](https://img.shields.io/badge/jQuery-3.7.0-0769AD?logo=jquery) | 3.7.0 | JavaScript Library |
 | ![AdminLTE](https://img.shields.io/badge/AdminLTE-3.0.4-3c8dbc) | 3.0.4 | Admin Template |
 | ![DataTables](https://img.shields.io/badge/DataTables-1.10.15-3c8dbc) | 1.10.15 | Table Plugin |
@@ -343,10 +364,19 @@ MVC_ONLINE_TICARI_OTOMASYON/
 │   └── 📂 Grafik/                    # Grafik view'ları
 │
 ├── 📂 Helpers/                        # Yardımcı sınıflar
+│   ├── HtmlHelperExtensions.cs       # Custom HTML Helper'lar
 │   └── FileHelper.cs                 # Dosya işlemleri
 │
 ├── 📂 TagHelpers/                     # Custom Tag Helper'lar
-│   └── EmailTagHelper.cs             # Email tag helper
+│   └── CustomTagHelpers.cs           # Email, Phone, Card tag helper'lar
+│
+├── 📂 ViewComponents/                 # ViewComponent sınıfları
+│   ├── PersonelDepartmanViewComponent.cs     # Personel departman istatistikleri
+│   ├── CarilerListViewComponent.cs           # Cariler listesi
+│   ├── UrunlerListViewComponent.cs           # Ürünler listesi
+│   ├── MarkaIstatistikViewComponent.cs       # Marka istatistikleri
+│   ├── CariMesajlarViewComponent.cs          # Cari mesajları
+│   └── DashboardSummaryViewComponent.cs      # Dashboard özet kartları
 │
 ├── 📂 wwwroot/                        # Statik dosyalar
 │   ├── 📂 AdminLTE-3.0.4/            # AdminLTE tema dosyaları
@@ -679,6 +709,12 @@ Bu projeyi kullandığınız için teşekkür ederiz!
 - [x] Raporlama modülü
 - [x] Responsive tasarım
 - [x] Areas yapısı
+- [x] ViewComponent implementasyonu
+- [x] Custom HTML Helper'lar
+- [x] Custom Tag Helper'lar
+- [x] Server-side ve Client-side Validation
+- [x] Dependency Injection
+- [x] Server-side Paging
 
 ### 🚧 Geliştirme Aşamasında
 
