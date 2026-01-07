@@ -53,7 +53,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             return RedirectToAction("Index");
         }
 
-        // �r�n Silme (Soft Delete)
         public ActionResult UrunSil(int id)
         {
             var deger = c.Uruns.Find(id);
@@ -61,8 +60,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             c.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        // �r�n Getirme (G�ncelleme i�in)
         public ActionResult UrunGetir(int id)
         {
             List<SelectListItem> deger1 = (from x in c.Kategoris.ToList()
@@ -76,8 +73,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             var urundeger = c.Uruns.Find(id);
             return View("UrunGetir", urundeger);
         }
-
-        // �r�n G�ncelleme
         [HttpPost]
         public ActionResult UrunGuncelle(Urun p, IFormFile UrunGorselFile)
         {

@@ -10,11 +10,9 @@
 <h2>Müşteri Güncelleme Ekranı</h2>
 <br />
 
-@using (Html.BeginForm("CariGuncelle", "Cari", FormMethod.Post))
+        @using (Html.BeginForm("CariGuncelle", "Cari", FormMethod.Post))
             {
                        <!--Seçtiğimiz kişinin değerlerini textbox ta getirmesi için yazldı-->
-
-        
                   <div class="form-group">
                       @Html.HiddenFor(x => x.Cariid)
                       @Html.LabelFor(x => x.CariAd)

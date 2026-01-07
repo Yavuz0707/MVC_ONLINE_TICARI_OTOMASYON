@@ -16,7 +16,7 @@
     <PackageReference Include="jquery.datatables" Version="1.10.15" />
     <PackageReference Include="jQuery.Validation" Version="1.19.5" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="4.0.0" />
+	  <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="4.0.0" />
     <PackageReference Include="Modernizr" Version="2.8.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="X.PagedList" Version="10.2.1" />

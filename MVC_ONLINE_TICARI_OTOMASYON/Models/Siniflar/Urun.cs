@@ -33,7 +33,6 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar
         public int Kategoriid { get; set; }
         public virtual Kategori Kategori { get; set; }
 
-        // SADECE BU KALSIN
         public virtual ICollection<SatisHareket> SatisHarekets { get; set; }
     }
 }

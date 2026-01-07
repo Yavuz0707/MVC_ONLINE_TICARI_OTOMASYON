@@ -1,4 +1,4 @@
-using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar; // Models namespace'i projenizin modellerini içerir
+using MVC_ONLINE_TICARI_OTOMASYON.Models.Siniflar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,112 +9,155 @@ using Microsoft.AspNetCore.Authorization;
 namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 {
     [AllowAnonymous]
-    public class SatýsController : Controller // 'SatýsController' yerine 'SatisController' olarak düzeltildi
+    public class SatisController : Controller
     {
-        // Veritabaný baðlamýný (context) oluþturalým.
+        // VeritabanÄ± baÄŸlamÄ±nÄ± (context) oluÅŸturalÄ±m.
         Context c = new Context();
 
-        // GET: Satis (Satýþlarý listeleme sayfasý)
+        // GET: Satis (SatÄ±ÅŸlarÄ± listeleme sayfasÄ±)
         public ActionResult Index()
         {
-            // SatisHarekets tablosundaki tüm kayýtlarý listeleyip view'e gönderiyoruz.
+            // SatisHarekets tablosundaki tÃ¼m kayÄ±tlarÄ± listeleyip view'e gÃ¶nderiyoruz.
             var degerler = c.SatisHarekets.ToList();
             return View(degerler);
         }
 
-        // GET: YeniSatis (Yeni satýþ ekleme formu sayfasý)
+        // GET: YeniSatis (Yeni satÄ±ÅŸ ekleme formu sayfasÄ±)
         [HttpGet]
         public ActionResult YeniSatis()
         {
-            // Dropdown listeler için gerekli verileri hazýrlýyoruz ve ViewBag ile View'e taþýyoruz.
+            // Dropdown listeler iÃ§in gerekli verileri hazÄ±rlÄ±yoruz ve ViewBag ile View'e taÅŸÄ±yoruz.
 
-            // 1. Ürünler için SelectListItem listesi
+            // 1. ÃœrÃ¼nler iÃ§in SelectListItem listesi
             List<SelectListItem> deger1 = (from x in c.Uruns.ToList()
                                            select new SelectListItem
                                            {
-                                               Text = x.UrunAd, // Dropdown'da görünecek metin (ürün adý)
-                                               Value = x.Urunid.ToString() // Seçildiðinde alýnacak deðer (ürün ID)
+                                               Text = x.UrunAd, // Dropdown'da gÃ¶rÃ¼necek metin (ÃœrÃ¼n adÄ±)
+                                               Value = x.Urunid.ToString() // SeÃ§ildiÄŸinde alÄ±nacak deÄŸer (ÃœrÃ¼n ID)
                                            }).ToList();
 
-            // 2. Cariler (Müþteriler) için SelectListItem listesi
+            // 2. Cariler (MÃ¼ÅŸteriler) iÃ§in SelectListItem listesi
             List<SelectListItem> deger2 = (from x in c.Carilers.ToList()
                                            select new SelectListItem
                                            {
-                                               Text = x.CariAd + " " + x.CariSoyad, // Müþteri adý ve soyadý birleþik
-                                               Value = x.Cariid.ToString() // Müþteri ID
+                                               Text = x.CariAd + " " + x.CariSoyad, // MÃ¼ÅŸteri adÄ± ve soyadÄ± birleÅŸik
+                                               Value = x.Cariid.ToString() // MÃ¼ÅŸteri ID
                                            }).ToList();
 
-            // 3. Personeller için SelectListItem listesi
+            // 3. Personeller iÃ§in SelectListItem listesi
             List<SelectListItem> deger3 = (from x in c.Personels.ToList()
                                            select new SelectListItem
                                            {
-                                               Text = x.PersonelAd + " " + x.PersonelSoyad, // Personel adý ve soyadý birleþik
+                                               Text = x.PersonelAd + " " + x.PersonelSoyad, // Personel adÄ± ve soyadÄ± birleÅŸik
                                                Value = x.Personelid.ToString() // Personel ID
                                            }).ToList();
 
-            // Bu listeleri ViewBag'e atayarak View'de eriþilebilir hale getiriyoruz.
-            ViewBag.dgr1 = deger1; // Ürünler
+            // Bu listeleri ViewBag'e atayarak View'de eriÅŸilebilir hale getiriyoruz.
+            ViewBag.dgr1 = deger1; // ÃœrÃ¼nler
             ViewBag.dgr2 = deger2; // Cariler
             ViewBag.dgr3 = deger3; // Personeller
 
-            // Yeni bir satýþ hareketi nesnesi oluþturup View'e gönderiyoruz.
+            // Yeni bir satÄ±ÅŸ hareketi nesnesi oluÅŸturup View'e gÃ¶nderiyoruz.
             return View(new SatisHareket());
         }
 
-        // POST: YeniSatis (Formdan gönderilen yeni satýþ verilerini iþleme)
+        // POST: YeniSatis (Formdan gÃ¶nderilen yeni satÄ±ÅŸ verilerini iÅŸleme)
         [HttpPost]
         public ActionResult YeniSatis(SatisHareket s)
         {
-            // Satýþ tarihini otomatik olarak güncel tarih olarak ayarlýyoruz.
-            s.Tarih = DateTime.Parse(DateTime.Now.ToShortDateString());
+            try
+            {
+                // SatÄ±ÅŸ tarihini otomatik olarak gÃ¼ncel tarih olarak ayarlÄ±yoruz.
+                s.Tarih = DateTime.Parse(DateTime.Now.ToShortDateString());
 
-            // Yeni satýþ hareketini veritabaný baðlamýna ekliyoruz.
-            c.SatisHarekets.Add(s);
+                // Foreign Key kontrolleri
+                // 1. Cari kontrolÃ¼ (EN Ã–NEMLÄ°!)
+                var cari = c.Carilers.Find(s.Cariid);
+                if (cari == null)
+                {
+                    TempData["Hata"] = "SeÃ§ilen cari bulunamadÄ±! LÃ¼tfen geÃ§erli bir cari seÃ§iniz.";
+                    return RedirectToAction("YeniSatis");
+                }
 
-            // Deðiþiklikleri veritabanýna kaydediyoruz.
-            c.SaveChanges();
+                // 2. ÃœrÃ¼n kontrolÃ¼
+                var urun = c.Uruns.Find(s.Urunid);
+                if (urun == null)
+                {
+                    TempData["Hata"] = "SeÃ§ilen Ã¼rÃ¼n bulunamadÄ±! LÃ¼tfen geÃ§erli bir Ã¼rÃ¼n seÃ§iniz.";
+                    return RedirectToAction("YeniSatis");
+                }
 
-            // Ýþlem tamamlandýktan sonra kullanýcýyý Satýþlar listeleme sayfasýna yönlendiriyoruz.
-            return RedirectToAction("Index");
+                // 3. Personel kontrolÃ¼
+                if (s.Personelid > 0)
+                {
+                    var personel = c.Personels.Find(s.Personelid);
+                    if (personel == null)
+                    {
+                        TempData["Hata"] = "SeÃ§ilen personel bulunamadÄ±! LÃ¼tfen geÃ§erli bir personel seÃ§iniz.";
+                        return RedirectToAction("YeniSatis");
+                    }
+                }
+
+                // Yeni satÄ±ÅŸ hareketini veritabanÄ± baÄŸlamÄ±na ekliyoruz.
+                c.SatisHarekets.Add(s);
+
+                // DeÄŸiÅŸiklikleri veritabanÄ±na kaydediyoruz.
+                c.SaveChanges();
+
+                TempData["Mesaj"] = "SatÄ±ÅŸ baÅŸarÄ±yla kaydedildi!";
+                // Ä°ÅŸlem tamamlandÄ±ktan sonra kullanÄ±cÄ±yÄ± SatÄ±ÅŸlar listeleme sayfasÄ±na yÃ¶nlendiriyoruz.
+                return RedirectToAction("Index");
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            {
+                var innerException = ex.InnerException?.InnerException?.Message ?? ex.Message;
+                TempData["Hata"] = $"VeritabanÄ± HatasÄ±: {innerException}";
+                return RedirectToAction("YeniSatis");
+            }
+            catch (Exception ex)
+            {
+                TempData["Hata"] = $"Beklenmeyen Hata: {ex.Message}";
+                return RedirectToAction("YeniSatis");
+            }
         }
 
-        public ActionResult SatisGetir (int id)
+public ActionResult SatisGetir(int id)
         {
             List<SelectListItem> deger1 = (from x in c.Uruns.ToList()
                                            select new SelectListItem
                                            {
-                                               Text = x.UrunAd, 
-                                               Value = x.Urunid.ToString() 
+                                               Text = x.UrunAd,
+                                               Value = x.Urunid.ToString()
                                            }).ToList();
 
-            
+
             List<SelectListItem> deger2 = (from x in c.Carilers.ToList()
                                            select new SelectListItem
                                            {
-                                               Text = x.CariAd + " " + x.CariSoyad, 
-                                               Value = x.Cariid.ToString() 
+                                               Text = x.CariAd + " " + x.CariSoyad,
+                                               Value = x.Cariid.ToString()
                                            }).ToList();
 
-            
+
             List<SelectListItem> deger3 = (from x in c.Personels.ToList()
                                            select new SelectListItem
                                            {
-                                               Text = x.PersonelAd + " " + x.PersonelSoyad, 
-                                               Value = x.Personelid.ToString() 
+                                               Text = x.PersonelAd + " " + x.PersonelSoyad,
+                                               Value = x.Personelid.ToString()
                                            }).ToList();
 
-            
-            ViewBag.dgr1 = deger1; 
-            ViewBag.dgr2 = deger2; 
-            ViewBag.dgr3 = deger3; 
-            var deger = c.SatisHarekets.Find(id); // Veritabanýndan ID'ye göre satýþ hareketini buluyoruz.
-            return View("SatisGetir", deger); // Bulunan satýþ hareketini "SatisGetir" view'ine gönderiyoruz.
+
+            ViewBag.dgr1 = deger1;
+            ViewBag.dgr2 = deger2;
+            ViewBag.dgr3 = deger3;
+            var deger = c.SatisHarekets.Find(id); // VeritabanÄ±ndan ID'ye gÃ¶re satÄ±ÅŸ hareketini buluyoruz.
+            return View("SatisGetir", deger); // Bulunan satÄ±ÅŸ hareketini "SatisGetir" view'ine gÃ¶nderiyoruz.
         }
 
-        public ActionResult SatisGuncelle (SatisHareket p)
+        public ActionResult SatisGuncelle(SatisHareket p)
         {
-            var deger = c.SatisHarekets.Find(p.Satisid); // Güncellenecek satýþ hareketini ID'sine göre buluyoruz.
-            deger.Cariid = p.Cariid; 
+            var deger = c.SatisHarekets.Find(p.Satisid); // GÃ¼ncellenecek satÄ±ÅŸ hareketini ID'sine gÃ¶re buluyoruz.
+            deger.Cariid = p.Cariid;
             deger.Adet = p.Adet;
             deger.Fiyat = p.Fiyat;
             deger.Personelid = p.Personelid;
@@ -122,15 +165,15 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
             deger.ToplamTutar = p.ToplamTutar;
             deger.Urunid = p.Urunid;
 
-            c.SaveChanges(); // Güncellenen satýþ hareketini veritabanýna kaydediyoruz.
-            return RedirectToAction("Index"); // Güncelleme iþleminden sonra kullanýcýyý Satýþlar listeleme sayfasýna yönlendiriyoruz.
+            c.SaveChanges(); // GÃ¼ncellenen satÄ±ÅŸ hareketini veritabanÄ±na kaydediyoruz.
+            return RedirectToAction("Index"); // GÃ¼ncelleme iÅŸleminden sonra kullanÄ±cÄ±yÄ± SatÄ±ÅŸlar listeleme sayfasÄ±na yÃ¶nlendiriyoruz.
 
         }
 
         public ActionResult SatisDetay(int id)
         {
-            var deger = c.SatisHarekets.Where(x => x.Satisid == id).ToList(); // Belirli bir satýþ ID'sine göre satýþ detaylarýný alýyoruz.
-            return View(deger); // Alýnan satýþ detaylarýný "SatisDetay" view'ine gönderiyoruz.
+            var deger = c.SatisHarekets.Where(x => x.Satisid == id).ToList(); // Belirli bir satÄ±ÅŸ ID'sine gÃ¶re satÄ±ÅŸ detaylarÄ±nÄ± alÄ±yoruz.
+            return View(deger); // AlÄ±nan satÄ±ÅŸ detaylarÄ±nÄ± "SatisDetay" view'ine gÃ¶nderiyoruz.
         }
     }
 }
