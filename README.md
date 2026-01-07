@@ -1,12 +1,13 @@
 # 🏢 MVC Online Ticari Otomasyon Sistemi
 
-Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönetimi, müşteri takibi, fatura ve satış işlemlerini yönetmek için geliştirilmiş profesyonel bir çözüm.
+Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönetimi, müşteri takibi, satış işlemlerini yönetmek için geliştirilmiş profesyonel bir çözüm.
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-MVC-512BD4?style=for-the-badge&logo=.net)
 ![Entity Framework](https://img.shields.io/badge/Entity_Framework-6.5.1-512BD4?style=for-the-badge)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.2.3-7952B3?style=for-the-badge&logo=bootstrap)
 ![ViewComponent](https://img.shields.io/badge/ViewComponent-✓-success?style=for-the-badge)
+![Tag Helpers](https://img.shields.io/badge/Tag_Helpers-✓-success?style=for-the-badge)
 
 ---
 
@@ -15,6 +16,7 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 - [Özellikler](#-özellikler)
 - [ViewComponent Desteği](#-viewcomponent-desteği)
 - [Teknolojiler](#-teknolojiler)
+- [Son Güncellemeler](#-son-güncellemeler)
 - [Sistem Gereksinimleri](#-sistem-gereksinimleri)
 - [Kurulum](#-kurulum)
 - [Veritabanı Yapılandırması](#-veritabanı-yapılandırması)
@@ -32,8 +34,8 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 - ✅ **Stok Takibi**: Gerçek zamanlı stok durumu izleme ve uyarı sistemi
 - ✅ **Kategori Yönetimi**: Hiyerarşik kategori yapısı ve organizasyon
 - ✅ **Müşteri (Cari) Yönetimi**: Detaylı müşteri bilgileri ve profil yönetimi
-- ✅ **Fatura İşlemleri**: Alış ve satış faturası oluşturma ve yönetimi
-- ✅ **Satış Takibi**: Detaylı satış raporları ve analiz araçları
+- ✅ **Müşteri Kayıt Sistemi**: Ana sayfadan yeni müşteri kaydı oluşturma
+- ✅ **Satış Takibi**: Detaylı satış raporları ve Foreign Key kontrolü ile güvenli işlem
 - ✅ **Personel Yönetimi**: Çalışan bilgileri ve yetki kontrolü
 - ✅ **Departman Organizasyonu**: Departman bazlı personel yönetimi
 
@@ -44,6 +46,39 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 - 📊 **Stok Raporları**: Kritik stok seviyesi uyarıları
 - 💰 **Finansal Raporlar**: Gelir-gider analizi ve kar/zarar hesaplamaları
 - 📋 **Ciro Takibi**: Müşteri bazlı ciro raporları
+
+---
+
+## 🚀 Son Güncellemeler (Ocak 2026)
+
+### 🔧 Hata Düzeltmeleri ve İyileştirmeler
+
+- ✅ **Satış Modülü Düzeltildi**: 
+  - Foreign Key kontrolü eklendi (Cari, Ürün, Personel doğrulama)
+  - DbUpdateException hata yönetimi geliştirildi
+  - Detaylı hata mesajları ve kullanıcı bildirimleri
+  - Try-Catch blokları ile güvenli işlem
+
+- ✅ **View Klasör Yapısı Düzeltildi**:
+  - `Views\Satıs` → `Views\Satis` (Encoding sorunu çözüldü)
+  - Controller-View eşleşmesi sağlandı
+  - Türkçe karakter sorunları giderildi
+
+- ✅ **Müşteri Kayıt Sistemi**:
+  - Ana giriş sayfasından "Kayıt Ol" özelliği aktif edildi
+  - Partial View yapısı düzeltildi
+  - E-mail tekrar kontrolü eklendi
+  - SweetAlert2 ile başarı/hata bildirimleri
+
+- ✅ **Menü ve Navigasyon İyileştirmeleri**:
+  - Satışlar linki düzeltildi (`/Satis/Index`)
+  - Kullanılmayan menü öğeleri kaldırıldı (Faturalar, Galeri, Personel Listesi)
+  - Daha temiz ve kullanışlı menü yapısı
+
+- ✅ **Encoding ve Karakter Sorunları**:
+  - Türkçe karakterler (ı, ş, ğ, ü, ö, ç) düzeltildi
+  - UTF-8 encoding standardına geçiş
+  - Controller ve View dosyaları temizlendi
 
 ---
 
@@ -70,7 +105,7 @@ Detaylı kullanım için:
 
 - 🔕 **Gerçek Zamanlı Bildirimler**: Önemli olaylar için anlık bildirimler
 - 📧 **Mesajlaşma Sistemi**: Dahili mesajlaşma ve iletişim modülü
-- ⚠️ **Uyarı Sistemi**: Kritik stok, ödeme ve görev bildirimleri
+- ⚠️ **Uyarı Sistemi**: Kritik stok, ödeme ve görev bildirimleri (SweetAlert2)
 - 📅 **Görev Yönetimi**: Yapılacaklar listesi ve takip sistemi
 
 ### 🎨 Kullanıcı Arayüzü
@@ -78,11 +113,11 @@ Detaylı kullanım için:
 - 🖥️ **Responsive Tasarım**: Tüm cihazlarda uyumlu görünüm
 - 🎭 **Modern UI/UX**: AdminLTE 3.0.4 ile profesyonel arayüz
 - 📱 **Mobil Uyumlu**: Mobil cihazlar için optimize edilmiş
-- 🌙 **Dark/Light Mode**: Tema değiştirme desteği
 - 🔍 **Gelişmiş Arama**: DataTables ile güçlü filtreleme ve arama
 - 🧩 **ViewComponent**: Yeniden kullanılabilir UI bileşenleri
-- 🏷️ **Custom Tag Helpers**: Özel HTML tag helper'ları
+- 🏷️ **Tag Helpers**: ASP.NET Core Tag Helper desteği
 - 🎨 **Custom HTML Helpers**: Özel HTML helper metodları
+- 💬 **SweetAlert2**: Modern pop-up bildirimler
 
 ### 🔐 Güvenlik ve Yetkilendirme
 
@@ -90,14 +125,16 @@ Detaylı kullanım için:
 - 🛡️ **Güvenli Oturum Yönetimi**: Session ve Cookie güvenliği
 - 🔑 **Şifre Koruması**: Güvenli şifreleme algoritmaları
 - 📝 **Denetim İzleri**: Tüm işlemler için log kaydı
-- 🚫 **XSS ve CSRF Koruması**: Güvenlik açıklarına karşı koruma
+- 🚫 **XSS ve CSRF Koruması**: Anti-Forgery Token kullanımı
+- ✅ **Foreign Key Validation**: Veri bütünlüğü kontrolü
 
 ### 🚀 Performans Özellikleri
 
 - ⚡ **Hızlı Yükleme**: Optimize edilmiş veritabanı sorguları
-- 💾 **Önbellekleme**: Cache mekanizması ile hızlı erişim
+- 💾 **Entity Framework 6.5.1**: Code First yaklaşımı
 - 📦 **Lazy Loading**: İhtiyaç anında veri yükleme
 - 🗜️ **Sıkıştırma**: CSS/JS dosyalarının minify edilmesi
+- 🔄 **Server-Side Paging**: PagedList ile sayfalama
 - 🔄 **Asenkron İşlemler**: AJAX ile sayfa yenilemesiz işlemler
 
 ---

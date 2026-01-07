@@ -146,8 +146,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="pop-up">
         <div id="small-dialog2" class="mfp-hide book-form">
 
-            @* TODO: Html.Action ASP.NET Core'da yok. ViewComponent kullanılmalı *@
-            @* @Html.Action("Partial1","Login") *@
+            @await Html.PartialAsync("Partial1")
 
         </div>
     </div>
@@ -188,6 +187,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 text: '@Html.Raw(TempData["HataMesaji"])',
                 confirmButtonText: 'Tamam',
                 confirmButtonColor: '#d33',
+                width: '400px',
+                customClass: {
+                    popup: 'swal-small'
+                }
+            });
+        </script>
+    }
+
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı!',
+                text: '@Html.Raw(TempData["BasariMesaji"])',
+                confirmButtonText: 'Tamam',
+                confirmButtonColor: '#28a745',
                 width: '400px',
                 customClass: {
                     popup: 'swal-small'

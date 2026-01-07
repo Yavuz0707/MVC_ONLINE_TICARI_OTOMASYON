@@ -38,6 +38,34 @@ namespace MVC_ONLINE_TICARI_OTOMASYON.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult CariKayit(Cariler p)
+        {
+            try
+            {
+                // E-mail kontrolü
+                var mevcutCari = c.Carilers.FirstOrDefault(x => x.CariMail == p.CariMail);
+                if (mevcutCari != null)
+                {
+                    TempData["HataMesaji"] = "Bu e-mail adresi zaten kayıtlı!";
+                    return RedirectToAction("Index");
+                }
+
+                // Yeni cari ekle
+                p.Durum = true; // Varsayılan olarak aktif
+                c.Carilers.Add(p);
+                c.SaveChanges();
+
+                TempData["BasariMesaji"] = "Kayıt başarılı! Giriş yapabilirsiniz.";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["HataMesaji"] = "Kayıt sırasında hata oluştu: " + ex.Message;
+                return RedirectToAction("Index");
+            }
+        }
+
         [HttpGet]
         public ActionResult CariLogin1()
         {
