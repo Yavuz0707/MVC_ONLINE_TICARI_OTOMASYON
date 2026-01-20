@@ -30,7 +30,7 @@ Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönet
 
 ### 🎯 Temel Özellikler
 
-- ✅ **Ürün Yönetimi**: Kapsamlı ürün ekleme, düzenleme, silme ve listeleme işlemleri
+- ✅ **Ürün Yönetimi**: Kapsamlı ürün ekleme, düzenleme, silme ve listeleme işlemleri.
 - ✅ **Stok Takibi**: Gerçek zamanlı stok durumu izleme ve uyarı sistemi
 - ✅ **Kategori Yönetimi**: Hiyerarşik kategori yapısı ve organizasyon
 - ✅ **Müşteri (Cari) Yönetimi**: Detaylı müşteri bilgileri ve profil yönetimi
