@@ -1,6 +1,6 @@
 # 🏢 MVC Online Ticari Otomasyon Sistemi
 
-Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönetimi, müşteri takibi, satış işlemlerini yönetmek için geliştirilmiş profesyonel bir çözüm.
+Modern ve kapsamlı bir ticari otomasyon web uygulaması. E-ticaret, stok yönetimi, müşteri takibi, satış işlemlerini yönetmek için geliştirilmiş profesyonel bir çözüm..
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-MVC-512BD4?style=for-the-badge&logo=.net)
